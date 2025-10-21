@@ -1,0 +1,8 @@
+# Behandle alle Dateien standardmäßig als Text mit LF-Zeilenenden
+* text=auto eol=lf
+
+# Behandle die folgenden Dateitypen explizit als Binärdateien
+*.png binary
+*.jpg binary
+*.gif binary
+*.pdf binary
