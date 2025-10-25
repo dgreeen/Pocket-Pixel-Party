@@ -39,3 +39,8 @@ sysinfo.txt
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# additional directories to be ignored
+.vscode/
+Logs/
+UserSettings/
