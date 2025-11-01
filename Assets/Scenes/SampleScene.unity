@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82988a4038e756643b70ea87fcc74ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  memePointId: MemePoint_01
 --- !u!61 &423245350
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -440,6 +441,7 @@ GameObject:
   - component: {fileID: 868712054}
   - component: {fileID: 868712056}
   - component: {fileID: 868712057}
+  - component: {fileID: 868712058}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -703,6 +705,19 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &868712058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868712049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c67cd535a6bbc64391915cfda1e90a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathZoneY: -20
 --- !u!1 &925366629
 GameObject:
   m_ObjectHideFlags: 0
