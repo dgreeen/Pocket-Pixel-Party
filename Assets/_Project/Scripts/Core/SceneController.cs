@@ -68,7 +68,7 @@ public class SceneController : MonoBehaviour
                 }
             }
 
-            MemePoint[] memePoints = FindObjectsOfType<MemePoint>();
+            MemePoint[] memePoints = FindObjectsByType<MemePoint>(FindObjectsSortMode.None);
             foreach (MemePoint point in memePoints)
             {
                 if (point.memePointId == _triggerIdToDestroy)
