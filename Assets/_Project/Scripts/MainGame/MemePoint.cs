@@ -10,7 +10,7 @@ public class MemePoint : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            SceneController.instance.EnterMinigame(memePointId);
+            SceneController.instance.EnterMinigame(memePointId, transform.position);
         }
     }
 }
