@@ -60,6 +60,12 @@ public class SceneController : MonoBehaviour
             if (player != null)
             {
                 player.transform.position = _respawnPosition;
+
+                // Aktualisiere den Respawn-Punkt im PlayerRespawn-Skript
+                PlayerRespawn playerRespawn = player.GetComponent<PlayerRespawn>();
+                if (playerRespawn != null) {
+                    playerRespawn.SetRespawnPoint(_respawnPosition);
+                }
             }
 
             MemePoint[] memePoints = FindObjectsOfType<MemePoint>();
