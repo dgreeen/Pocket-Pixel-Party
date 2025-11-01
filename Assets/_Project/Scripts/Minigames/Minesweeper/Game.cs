@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Timeline;
@@ -223,7 +224,6 @@ public class Game : MonoBehaviour
 
     private void Explode(Cell cell)
     {
-        Debug.Log("Game Over!"); // replace later with UI menu or something
         gameOver = true;
 
         cell.revealed = true;
@@ -243,6 +243,8 @@ public class Game : MonoBehaviour
                 }
             }
         }
+        
+        StartCoroutine(EndGame(false));
     }
 
     private void CheckWinCondition()
@@ -259,8 +261,8 @@ public class Game : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Winner!");
         gameOver = true;
+        Debug.Log("Winner!"); // Kann für Debugging bleiben
 
         for (int x = 0; x < width; x++)
         {
@@ -275,6 +277,8 @@ public class Game : MonoBehaviour
                 }
             }
         }
+        
+        StartCoroutine(EndGame(true));
     }
 
     private Cell GetCell(int x, int y)
@@ -291,5 +295,36 @@ public class Game : MonoBehaviour
     private bool IsValid(int x, int y)
     {
         return x >= 0 && x < width && y >= 0 && y < height;
+    }
+    
+    private IEnumerator EndGame(bool won)
+    {
+        // Warte 3 Sekunden, damit der Spieler das Ergebnis sehen kann
+        yield return new WaitForSeconds(3f);
+
+        // TODO: Hier könnte man Logik für Belohnungen bei Sieg einfügen
+        if (won)
+        {
+            // z.B. Fortschritt speichern
+            // TODO: Hier könnte man Logik für Belohnungen bei Sieg einfügen (z.B. Fortschritt speichern)
+            
+            // Entferne die automatisch gesetzten Flaggen wieder
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    Cell cell = state[x, y];
+                    if (cell.type == Cell.Type.Mine)
+                    {
+                        cell.flagged = false;
+                        state[x, y] = cell;
+                    }
+                }
+            }
+            board.Draw(state);
+            yield return new WaitForSeconds(0.5f); // Kurze Pause, damit das Verschwinden der Flaggen sichtbar ist
+        }
+        
+        SceneController.instance.ReturnToMainGame();
     }
 }

@@ -6,7 +6,7 @@ public class MemePoint : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            SceneController.instance.EnterMinigame();
+            SceneController.instance.EnterMinigame(gameObject);
         }
     }
 }
