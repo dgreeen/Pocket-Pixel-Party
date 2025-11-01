@@ -5,8 +5,8 @@ public class SceneController : MonoBehaviour
 {
     public static SceneController instance;
     
-    private GameObject _minigameTriggerObject;
     private string _mainSceneName;
+    private string _triggerIdToDestroy;
     
     private void Awake()
     {
@@ -28,9 +28,9 @@ public class SceneController : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    public void EnterMinigame(GameObject triggerObject)
+    public void EnterMinigame(string triggerId)
     {
-        _minigameTriggerObject = triggerObject;
+        _triggerIdToDestroy = triggerId;
         _mainSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
     }
@@ -50,9 +50,18 @@ public class SceneController : MonoBehaviour
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == _mainSceneName && _minigameTriggerObject != null) {
-            Destroy(_minigameTriggerObject);
-            _minigameTriggerObject = null;
+        // Prüfen, ob wir zur Hauptszene zurückkehren und ob eine ID zum Zerstören gespeichert ist.
+        if (scene.name == _mainSceneName && !string.IsNullOrEmpty(_triggerIdToDestroy)) {
+            MemePoint[] memePoints = FindObjectsOfType<MemePoint>();
+            foreach (MemePoint point in memePoints)
+            {
+                if (point.memePointId == _triggerIdToDestroy)
+                {
+                    Destroy(point.gameObject);
+                    break; // Objekt gefunden und zerstört, Schleife beenden.
+                }
+            }
+            _triggerIdToDestroy = null; // ID zurücksetzen, damit es nicht nochmal passiert.
         }
     }
 }
