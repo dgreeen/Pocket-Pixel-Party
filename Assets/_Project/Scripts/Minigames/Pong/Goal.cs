@@ -11,7 +11,7 @@ public class Goal : MonoBehaviour
 
     void Start()
     {
-        gameManager = FindObjectOfType<PongGameManager>();
+        gameManager = FindFirstObjectByType<PongGameManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
