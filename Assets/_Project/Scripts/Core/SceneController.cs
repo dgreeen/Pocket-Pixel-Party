@@ -13,21 +13,23 @@ public class SceneController : MonoBehaviour
     
     private void Awake()
     {
-        // Klassisches Singleton-Pattern: Stellt sicher, dass es nur einen SceneController gibt.
-        if (instance == null)
-        {
-            instance = this;
-            // Stelle sicher, dass dieses Objekt auch ein EventSystem hat.
-            if (GetComponent<EventSystem>() == null)
-            {
-                gameObject.AddComponent<EventSystem>();
-                gameObject.AddComponent<StandaloneInputModule>();
-            }
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        // Wenn bereits eine Instanz existiert und es nicht diese hier ist,
+        // zerstöre dieses Duplikat und verlasse die Methode sofort.
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
+            return;
+        }
+
+        // Dies ist die erste Instanz, mache sie zum Singleton.
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        // Stelle sicher, dass dieses Objekt auch ein EventSystem hat.
+        if (GetComponent<EventSystem>() == null)
+        {
+            gameObject.AddComponent<EventSystem>();
+            gameObject.AddComponent<StandaloneInputModule>();
         }
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
