@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
@@ -5,9 +6,8 @@ using UnityEngine.EventSystems;
 public class SceneController : MonoBehaviour
 {
     public static SceneController instance;
-    
     private string _mainSceneName;
-    private string _triggerIdToDestroy;
+    private readonly List<string> _completedMemePointIds = new List<string>();
     private Vector3 _respawnPosition;
     private string _previousSceneName;
     
@@ -39,12 +39,16 @@ public class SceneController : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    public void EnterMinigame(string triggerId, Vector3 triggerPosition)
+    public void EnterMinigame(string triggerId, Vector3 triggerPosition, string sceneName)
     {
-        _triggerIdToDestroy = triggerId;
+        if (!_completedMemePointIds.Contains(triggerId))
+        {
+            _completedMemePointIds.Add(triggerId);
+        }
+        
         _respawnPosition = triggerPosition;
         _mainSceneName = SceneManager.GetActiveScene().name;
-        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+        LoadScene(sceneName);
     }
 
     public void LoadScene(string sceneName)
@@ -81,8 +85,8 @@ public class SceneController : MonoBehaviour
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Prüfen, ob wir zur Hauptszene zurückkehren und ob eine ID zum Zerstören gespeichert ist.
-        if (scene.name == _mainSceneName && !string.IsNullOrEmpty(_triggerIdToDestroy)) {
+        // Prüfen, ob wir zur Hauptszene zurückkehren.
+        if (scene.name == _mainSceneName) {
             
             // Finde den Spieler und setze seine Position
             GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -97,16 +101,19 @@ public class SceneController : MonoBehaviour
                 }
             }
 
+            // Finde alle MemePoints in der Szene.
             MemePoint[] memePoints = FindObjectsByType<MemePoint>(FindObjectsSortMode.None);
             foreach (MemePoint point in memePoints)
             {
-                if (point.memePointId == _triggerIdToDestroy)
+                // Wenn die ID des Punktes in unserer Liste der abgeschlossenen Punkte ist, zerstöre ihn.
+                if (_completedMemePointIds.Contains(point.memePointId))
                 {
                     Destroy(point.gameObject);
-                    break; // Objekt gefunden und zerstört, Schleife beenden.
                 }
             }
-            _triggerIdToDestroy = null; // ID und Position zurücksetzen, damit es nicht nochmal passiert.
+            
+            // Setze nur die Respawn-Position zurück. Die Liste der IDs bleibt erhalten.
+            _respawnPosition = Vector3.zero;
         }
     }
 }
