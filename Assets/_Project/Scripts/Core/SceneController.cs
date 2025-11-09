@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class SceneController : MonoBehaviour
 {
@@ -8,19 +9,28 @@ public class SceneController : MonoBehaviour
     private string _mainSceneName;
     private readonly List<string> _completedMemePointIds = new List<string>();
     private Vector3 _respawnPosition;
+    private string _previousSceneName;
     
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        // Wenn bereits eine Instanz existiert und es nicht diese hier ist,
+        // zerstöre dieses Duplikat und verlasse die Methode sofort.
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
+            return;
         }
-        
+
+        // Dies ist die erste Instanz, mache sie zum Singleton.
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        // Stelle sicher, dass dieses Objekt auch ein EventSystem hat.
+        if (GetComponent<EventSystem>() == null)
+        {
+            gameObject.AddComponent<EventSystem>();
+            gameObject.AddComponent<StandaloneInputModule>();
+        }
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -43,14 +53,33 @@ public class SceneController : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
+        _previousSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadSceneAsync(sceneName);
     }
 
     public void ReturnToMainGame()
     {
-        if (!string.IsNullOrEmpty(_mainSceneName))
+        // Diese Methode ist spezifisch für die Rückkehr aus Minispielen
+        if (!string.IsNullOrEmpty(_mainSceneName)) 
         {
             LoadScene(_mainSceneName);
+        }
+        else
+        {
+            Debug.LogWarning("Keine Hauptspiel-Szene zum Zurückkehren definiert. Verwende ReturnToPreviousScene().");
+            ReturnToPreviousScene();
+        }
+    }
+
+    public void ReturnToPreviousScene()
+    {
+        if (!string.IsNullOrEmpty(_previousSceneName))
+        {
+            LoadScene(_previousSceneName);
+        }
+        else
+        {
+            Debug.LogError("Keine vorherige Szene zum Zurückkehren gefunden!");
         }
     }
     
