@@ -8,9 +8,11 @@ public class SceneController : MonoBehaviour
     private string _mainSceneName;
     private string _triggerIdToDestroy;
     private Vector3 _respawnPosition;
+    private string _previousSceneName;
     
     private void Awake()
     {
+        // Klassisches Singleton-Pattern: Stellt sicher, dass es nur einen SceneController gibt.
         if (instance == null)
         {
             instance = this;
@@ -20,7 +22,6 @@ public class SceneController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -39,14 +40,33 @@ public class SceneController : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
+        _previousSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadSceneAsync(sceneName);
     }
 
     public void ReturnToMainGame()
     {
-        if (!string.IsNullOrEmpty(_mainSceneName))
+        // Diese Methode ist spezifisch für die Rückkehr aus Minispielen
+        if (!string.IsNullOrEmpty(_mainSceneName)) 
         {
             LoadScene(_mainSceneName);
+        }
+        else
+        {
+            Debug.LogWarning("Keine Hauptspiel-Szene zum Zurückkehren definiert. Verwende ReturnToPreviousScene().");
+            ReturnToPreviousScene();
+        }
+    }
+
+    public void ReturnToPreviousScene()
+    {
+        if (!string.IsNullOrEmpty(_previousSceneName))
+        {
+            LoadScene(_previousSceneName);
+        }
+        else
+        {
+            Debug.LogError("Keine vorherige Szene zum Zurückkehren gefunden!");
         }
     }
     

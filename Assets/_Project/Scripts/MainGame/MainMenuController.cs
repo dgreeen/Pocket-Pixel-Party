@@ -11,8 +11,10 @@ public class MainMenuController : MonoBehaviour
     public void StartGame()
     {
         // Lädt die erste Spielszene.
-        // Stelle sicher, dass SceneController.instance in der nächsten Szene vorhanden ist.
-        SceneManager.LoadScene(firstLevelSceneName);
+        // Wir verwenden den SceneController, um konsistent zu bleiben.
+        // Stelle sicher, dass ein SceneController-Prefab in der MainMenu-Szene ist.
+        if (SceneController.instance != null)
+            SceneController.instance.LoadScene(firstLevelSceneName);
     }
 
     public void OpenCharacterSelection()
@@ -25,7 +27,8 @@ public class MainMenuController : MonoBehaviour
     public void OpenSettings()
     {
         // Hier könntest du ein Einstellungs-Panel anzeigen oder eine Einstellungs-Szene laden.
-        SceneManager.LoadScene(settingsSceneName);
+        if (SceneController.instance != null)
+            SceneController.instance.LoadScene(settingsSceneName);
     }
 
     public void QuitGame()
