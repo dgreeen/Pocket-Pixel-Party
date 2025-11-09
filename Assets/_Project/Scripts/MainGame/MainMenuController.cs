@@ -8,6 +8,14 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private string settingsSceneName = "SettingsScene";
     [SerializeField] private string firstLevelSceneName = "SampleScene"; 
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip backgroundMusic;
+
+    private void Start()
+    {
+        MusicManager.instance.PlayMusic(backgroundMusic);
+    }
+
     public void StartGame()
     {
         // Lädt die erste Spielszene.

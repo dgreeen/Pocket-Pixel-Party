@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class SceneController : MonoBehaviour
 {
@@ -16,6 +17,12 @@ public class SceneController : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            // Stelle sicher, dass dieses Objekt auch ein EventSystem hat.
+            if (GetComponent<EventSystem>() == null)
+            {
+                gameObject.AddComponent<EventSystem>();
+                gameObject.AddComponent<StandaloneInputModule>();
+            }
             DontDestroyOnLoad(gameObject);
         }
         else
