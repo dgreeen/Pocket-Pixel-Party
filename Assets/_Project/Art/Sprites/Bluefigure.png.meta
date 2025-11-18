@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 57f3addf2dbc2b44bb357e2374184065
+guid: eb7b2841663048d498d4b4c9209303a1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2053486289074076661
-    second: YellowStar_0
+      213: -7884197255354566850
+    second: Bluefigure_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: YellowStar_0
+      name: Bluefigure_0
       rect:
         serializedVersion: 2
-        x: 86
-        y: 221
-        width: 907
-        height: 1021
+        x: 144
+        y: 317
+        width: 760
+        height: 857
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5fb356b66e27f7c10800000000000000
-      internalID: 2053486289074076661
+      spriteID: e373b775e54b59290800000000000000
+      internalID: -7884197255354566850
       vertices: []
       indices: 
       edges: []
@@ -123,7 +123,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 7e4f9053017babb44815c595e7a1664d
+    spriteID: 49d436c70b8d94e4392cf3050628f3a4
     internalID: 0
     vertices: []
     indices: 
@@ -131,7 +131,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      YellowStar_0: 2053486289074076661
+      Bluefigure_0: -7884197255354566850
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
