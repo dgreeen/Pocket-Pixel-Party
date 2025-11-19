@@ -59,7 +59,7 @@ public class SimonGame : MonoBehaviour
 
     private void PrepareInitialState()
     {
-        statusText.text = "Drücke Start!";
+        statusText.text = "Klicke Start!";
         startButton.gameObject.SetActive(true);
         SetButtonsInteractable(false);
         gameIsActive = false;
@@ -149,7 +149,7 @@ public class SimonGame : MonoBehaviour
         gameIsActive = false;
         isPlayerTurn = false;
         SetButtonsInteractable(false);
-        statusText.text = "Gewonnen! Perfektes Gedächtnis!";
+        statusText.text = "Gewonnen! Geniale Merkrate!";
         // Starte die Rückkehr zur Hauptszene
         StartCoroutine(ReturnToMainGameAfterDelay());
     }
