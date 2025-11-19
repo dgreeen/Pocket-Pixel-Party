@@ -16,10 +16,19 @@ public class SimonGame : MonoBehaviour
 
     [Header("Spiel-Einstellungen")]
     [Tooltip("Die Geschwindigkeit, mit der die Sequenz angezeigt wird (in Sekunden).")]
-    [SerializeField] private float sequenceDisplaySpeed = 0.75f;
+    //[SerializeField] private float sequenceDisplaySpeed = 0.75f;
+    [SerializeField] private float initialSequenceDisplaySpeed = 0.75f;
+    [Tooltip("Der Faktor, um den die Geschwindigkeit pro Runde erhöht wird (z.B. 0.95 für 5% schneller).")]
+    [SerializeField] private float speedIncreaseFactor = 0.95f;
+    [Tooltip("Die maximale Geschwindigkeit (minimale Anzeigedauer in Sekunden).")]
+    [SerializeField] private float minSequenceDisplaySpeed = 0.3f;
+    [Tooltip("Die Dauer, die ein Button beim Drücken durch den Spieler aufleuchtet.")]
+    [SerializeField] private float playerHighlightDuration = 0.2f;
     [Tooltip("Die Farbe, die ein Button annimmt, wenn er aufleuchtet.")]
     [SerializeField] private Color highlightColor = new Color(0.88f, 0.88f, 0.88f); // Hex: #E0E0E0
 
+
+    private float currentSequenceDisplaySpeed;
     private List<int> sequence = new List<int>();
     private int playerInputIndex;
     private bool isPlayerTurn = false;
@@ -61,6 +70,7 @@ public class SimonGame : MonoBehaviour
         gameIsActive = true;
         startButton.gameObject.SetActive(false);
         sequence.Clear();
+        currentSequenceDisplaySpeed = initialSequenceDisplaySpeed;
         StartCoroutine(ComputerTurn());
     }
 
@@ -72,14 +82,22 @@ public class SimonGame : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        // Erhöhe die Geschwindigkeit für die neue Runde (außer in der ersten Runde)
+        if (sequence.Count > 0)
+        {
+            currentSequenceDisplaySpeed = Mathf.Max(minSequenceDisplaySpeed, currentSequenceDisplaySpeed * speedIncreaseFactor);
+        }
+
         // Füge ein neues, zufälliges Element zur Sequenz hinzu
         sequence.Add(Random.Range(0, colorButtons.Length));
 
         // Zeige die gesamte Sequenz an
         foreach (int index in sequence)
         {
-            yield return StartCoroutine(HighlightButton(index));
-            yield return new WaitForSeconds(sequenceDisplaySpeed / 2);
+            //yield return StartCoroutine(HighlightButton(index));
+            //yield return new WaitForSeconds(sequenceDisplaySpeed / 2);
+            yield return StartCoroutine(HighlightButton(index, currentSequenceDisplaySpeed));
+            yield return new WaitForSeconds(currentSequenceDisplaySpeed / 2);
         }
 
         // Starte den Zug des Spielers
@@ -98,7 +116,8 @@ public class SimonGame : MonoBehaviour
     {
         if (!isPlayerTurn) return;
 
-        StartCoroutine(HighlightButton(index));
+        //StartCoroutine(HighlightButton(index));
+        StartCoroutine(HighlightButton(index, playerHighlightDuration));
 
         if (sequence[playerInputIndex] == index)
         {
@@ -107,7 +126,7 @@ public class SimonGame : MonoBehaviour
             if (playerInputIndex >= sequence.Count)
             {
                 // Gewinnbedingung prüfen: Punktzahl 10 erreicht
-                if (sequence.Count == 2)
+                if (sequence.Count == 10)
                 {
                     WinGame();
                 }
@@ -145,12 +164,13 @@ public class SimonGame : MonoBehaviour
         SetButtonsInteractable(false);
     }
 
-    private IEnumerator HighlightButton(int index)
+    private IEnumerator HighlightButton(int index, float duration)
     {
         Image buttonImage = colorButtons[index].GetComponent<Image>();
         buttonImage.color = highlightColor;
         // Hier könnte man auch einen Sound abspielen
-        yield return new WaitForSeconds(sequenceDisplaySpeed);
+        //yield return new WaitForSeconds(sequenceDisplaySpeed);
+        yield return new WaitForSeconds(duration);
         buttonImage.color = originalColors[index];
     }
 
