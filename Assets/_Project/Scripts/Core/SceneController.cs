@@ -9,6 +9,7 @@ public class SceneController : MonoBehaviour
     private string _mainSceneName;
     private readonly List<string> _completedMemePointIds = new List<string>();
     private Vector3 _respawnPosition;
+    private string _currentMemePointId; // Merkt sich die ID des aktuellen Minispiels
     private string _previousSceneName;
     
     private void Awake()
@@ -41,14 +42,34 @@ public class SceneController : MonoBehaviour
 
     public void EnterMinigame(string triggerId, Vector3 triggerPosition, string sceneName)
     {
+        // Standardverhalten: Minispiel bei Betreten als "erledigt" markieren.
+        // Das ist gut für einfache Spiele ohne explizite Sieg-Belohnung.
         if (!_completedMemePointIds.Contains(triggerId))
         {
             _completedMemePointIds.Add(triggerId);
         }
         
+        _currentMemePointId = triggerId;
         _respawnPosition = triggerPosition;
         _mainSceneName = SceneManager.GetActiveScene().name;
         LoadScene(sceneName);
+    }
+
+    public void UncompleteCurrentMinigame()
+    {
+        if (!string.IsNullOrEmpty(_currentMemePointId))
+        {
+            _completedMemePointIds.Remove(_currentMemePointId);
+        }
+    }
+
+    // Wird von Minispielen aufgerufen, die eine explizite Siegbedingung haben.
+    public void CompleteCurrentMinigame()
+    {
+        if (!string.IsNullOrEmpty(_currentMemePointId) && !_completedMemePointIds.Contains(_currentMemePointId))
+        {
+            _completedMemePointIds.Add(_currentMemePointId);
+        }
     }
 
     public void LoadScene(string sceneName)
@@ -92,7 +113,10 @@ public class SceneController : MonoBehaviour
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
             {
-                player.transform.position = _respawnPosition;
+                // Setze den Spieler leicht VOR die Respawn-Position,
+                // um zu verhindern, dass er sofort wieder den Trigger auslöst.
+                Vector3 safeRespawnPosition = _respawnPosition - new Vector3(0.5f, 0, 0);
+                player.transform.position = safeRespawnPosition;
 
                 // Aktualisiere den Respawn-Punkt im PlayerRespawn-Skript
                 PlayerRespawn playerRespawn = player.GetComponent<PlayerRespawn>();
@@ -114,6 +138,7 @@ public class SceneController : MonoBehaviour
             
             // Setze nur die Respawn-Position zurück. Die Liste der IDs bleibt erhalten.
             _respawnPosition = Vector3.zero;
+            _currentMemePointId = null;
         }
     }
 }
