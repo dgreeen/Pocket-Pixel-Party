@@ -71,7 +71,7 @@ namespace Minigames.RockPaperScissors
         private void ResetRound()
         {
             isRoundOver = false;
-            resultText.text = "Wähle deine Hand!";
+            resultText.text = "Deine Wahl:";
             playerChoiceImage.gameObject.SetActive(false);
             computerChoiceImage.gameObject.SetActive(false);
             SetChoiceButtonsInteractable(true);
