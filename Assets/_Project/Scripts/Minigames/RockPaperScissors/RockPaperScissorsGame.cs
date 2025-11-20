@@ -5,9 +5,7 @@ using System.Collections;
 
 namespace Minigames.RockPaperScissors
 {
-    /// <summary>
-    /// Definiert die möglichen Züge im Spiel.
-    /// </summary>
+    // Definiert die möglichen Züge im Spiel.
     public enum Choice
     {
         Schere,
@@ -15,9 +13,7 @@ namespace Minigames.RockPaperScissors
         Papier
     }
 
-    /// <summary>
-    /// Steuert die Logik für das Schere-Stein-Papier Minispiel.
-    /// </summary>
+    // Steuert die Logik für das Schere-Stein-Papier Minispiel.
     public class RockPaperScissorsGame : MonoBehaviour
     {
         [Header("UI-Elemente")]
@@ -47,10 +43,8 @@ namespace Minigames.RockPaperScissors
             ResetRound();
         }
 
-        /// <summary>
-        /// Wird aufgerufen, wenn der Spieler eine Auswahl trifft (über einen Button).
-        /// </summary>
-        /// <param name="playerChoiceInt">Die Auswahl des Spielers als Integer (0=Schere, 1=Stein, 2=Papier).</param>
+        // Wird aufgerufen, wenn der Spieler eine Auswahl trifft (über einen Button).
+        // playerChoiceInt: Die Auswahl des Spielers als Integer (0=Schere, 1=Stein, 2=Papier).
         public void OnPlayerChoice(int playerChoiceInt)
         {
             if (isRoundOver) return;
@@ -73,9 +67,7 @@ namespace Minigames.RockPaperScissors
             StartCoroutine(EndRound());
         }
 
-        /// <summary>
-        /// Setzt die Runde in den Anfangszustand zurück.
-        /// </summary>
+        // Setzt die Runde in den Anfangszustand zurück.
         private void ResetRound()
         {
             isRoundOver = false;
@@ -86,9 +78,7 @@ namespace Minigames.RockPaperScissors
             UpdateScoreDisplay();
         }
 
-        /// <summary>
-        /// Aktiviert oder deaktiviert alle Auswahl-Buttons.
-        /// </summary>
+        // Aktiviert oder deaktiviert alle Auswahl-Buttons.
         private void SetChoiceButtonsInteractable(bool isInteractable)
         {
             foreach (var button in choiceButtons)
@@ -97,9 +87,7 @@ namespace Minigames.RockPaperScissors
             }
         }
 
-        /// <summary>
-        /// Zeigt die Grafiken für die Auswahl des Spielers und des Computers an.
-        /// </summary>
+        // Zeigt die Grafiken für die Auswahl des Spielers und des Computers an.
         private void DisplayChoices(Choice player, Choice computer)
         {
             playerChoiceImage.sprite = GetSpriteForChoice(player);
@@ -109,9 +97,7 @@ namespace Minigames.RockPaperScissors
             computerChoiceImage.gameObject.SetActive(true);
         }
 
-        /// <summary>
-        /// Ermittelt den Gewinner und aktualisiert den Ergebnis-Text.
-        /// </summary>
+        // Ermittelt den Gewinner und aktualisiert den Ergebnis-Text.
         private void DetermineWinner(Choice player, Choice computer)
         {
             if (player == computer)
@@ -194,9 +180,7 @@ namespace Minigames.RockPaperScissors
             }
         }
         
-        /// <summary>
-        /// Gibt das passende Sprite für eine gegebene Auswahl zurück.
-        /// </summary>
+        // Gibt das passende Sprite für eine gegebene Auswahl zurück.
         private Sprite GetSpriteForChoice(Choice choice)
         {
             switch (choice)
