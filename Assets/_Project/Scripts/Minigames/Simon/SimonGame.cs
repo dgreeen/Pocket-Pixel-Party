@@ -158,10 +158,11 @@ public class SimonGame : MonoBehaviour
     {
         gameIsActive = false;
         isPlayerTurn = false;
-        statusText.text = $"Spiel vorbei! Deine Punktzahl: {sequence.Count - 1}";
-        startButton.gameObject.SetActive(true);
-        startButton.GetComponentInChildren<TextMeshProUGUI>().text = "Neustart";
         SetButtonsInteractable(false);
+        statusText.text = $"Spiel vorbei! Deine Punktzahl: {sequence.Count - 1}";
+
+        // Starte die Rückkehr zur Hauptszene
+        StartCoroutine(ReturnToMainGameAfterDelay());
     }
 
     private IEnumerator HighlightButton(int index, float duration)
