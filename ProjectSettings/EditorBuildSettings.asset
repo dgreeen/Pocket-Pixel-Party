@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SimonGame.unity
     guid: 4c74898573d95a6438f7442fc97a8ef0
+  - enabled: 1
+    path: Assets/Scenes/RockPaperScissors.unity
+    guid: 61d3aa30ad61948478542174c6ff55e5
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 0371d155fb90b9c48b8c7bca39f703ca, type: 2}
   m_UseUCBPForAssetBundles: 0
