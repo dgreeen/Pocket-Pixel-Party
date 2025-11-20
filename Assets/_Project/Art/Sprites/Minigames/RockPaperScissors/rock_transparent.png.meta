@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      rock_transparent_0: 427017802169051815
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
