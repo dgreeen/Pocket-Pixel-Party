@@ -1,4 +1,3 @@
-// c:/Users/dgreen/workspace/Pocket-Pixel-Party/Assets/_Project/Scripts/Minigames/Dame/DameGameManager.cs
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,6 +30,16 @@ public class DameGameManager : MonoBehaviour
     void Start()
     {
         GenerateBoard();
+
+        // --- WICHTIG: UI mit dem globalen EventSystem verbinden ---
+        // Finde den Canvas dieses Minigames und verbinde ihn mit der Hauptkamera.
+        var canvas = GetComponentInChildren<Canvas>();
+        if (canvas != null && canvas.worldCamera == null)
+        {
+            // Verbinde den Canvas mit der Hauptkamera, damit der GraphicRaycaster funktioniert.
+            canvas.worldCamera = Camera.main;
+        }
+
         SetupPieces();
         ShowStartPanel();
     }
@@ -48,6 +57,11 @@ public class DameGameManager : MonoBehaviour
     private void ShowStartPanel()
     {
         if (infoPanel == null) return;
+        // Aktiviere das globale EventSystem, damit der UI-Button funktioniert.
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.gameObject.GetComponent<UnityEngine.EventSystems.EventSystem>().enabled = true;
+        }
         infoPanelTitle.text = "Spielregeln";
         infoPanelBody.text = "Dein Ziel ist es, alle Steine der CPU zu schlagen.\n- Du hast die <b>hellen</b> Steine.\n- Steine bewegen sich nur diagonal nach vorne.\n- Erreicht ein Stein die Grundlinie des Gegners, wird er zur <b>Dame</b> und darf auch nach hinten ziehen.\n- Schlagen ist Pflicht!\n- Klicke einen Stein erneut an, um die Auswahl aufzuheben.";
         infoPanelButtonText.text = "Okay";
@@ -60,6 +74,11 @@ public class DameGameManager : MonoBehaviour
     private void StartGameFromPanel()
     {
         infoPanel.SetActive(false);
+        // Deaktiviere das EventSystem, damit Klicks die 2D-Collider der Spielsteine erreichen.
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.gameObject.GetComponent<UnityEngine.EventSystems.EventSystem>().enabled = false;
+        }
         isGameActive = true;
         SwitchTurnTo(PieceColor.Light);
     }
@@ -130,7 +149,7 @@ public class DameGameManager : MonoBehaviour
                 var possibleJumps = FindAllPossibleMoves(PieceColor.Light, true);
                 if (possibleJumps.Count > 0 && FindJumpsForPiece(clickedPiece).Count == 0)
                 {
-                    UpdateTurnUI("Schlagzwang! Du musst einen Stein schlagen.");
+                    UpdateTurnUI("Schlagzwang!");
                     return;
                 }
                 SelectPiece(clickedPiece);
@@ -146,13 +165,23 @@ public class DameGameManager : MonoBehaviour
         {
             title = "Sieg!";
             body = "Gratulation, du hast die CPU besiegt!";
+            // Dem SceneController mitteilen, dass das Minispiel gewonnen wurde.
+            if (SceneController.instance != null)
+            {
+                SceneController.instance.CompleteCurrentMinigame();
+            }
         }
         else
         {
             title = "Spiel vorbei";
             body = "Die CPU hat dieses Mal gewonnen. Probiere es erneut!";
+            // Dem SceneController mitteilen, dass das Minispiel verloren wurde (und nicht als abgeschlossen gilt).
+            if (SceneController.instance != null)
+            {
+                SceneController.instance.UncompleteCurrentMinigame();
+            }
         }
-        ShowEndPanel(title, body);
+        StartCoroutine(EndGameSequence(title, body));
     }
     #endregion
 
@@ -384,20 +413,31 @@ public class DameGameManager : MonoBehaviour
         if (turnText != null) turnText.text = message;
     }
 
-    private void ShowEndPanel(string title, string body)
+    private IEnumerator EndGameSequence(string title, string body)
     {
-        if (infoPanel == null) return;
-        infoPanelTitle.text = title;
-        infoPanelBody.text = body;
-        infoPanelButtonText.text = "Try again";
-        infoPanelButton.onClick.RemoveAllListeners();
-        infoPanelButton.onClick.AddListener(RestartGame);
-        infoPanel.SetActive(true);
+        // Zeige das Ergebnis-Panel ohne Button an.
+        if (infoPanel != null)
+        {
+            infoPanelTitle.text = title;
+            infoPanelBody.text = body;
+            infoPanelButton.gameObject.SetActive(false); // Verstecke den Button
+            infoPanel.SetActive(true);
+        }
+
+        // Warte eine kurze Zeit, damit der Spieler das Ergebnis lesen kann.
+        yield return new WaitForSeconds(3.0f);
+
+        // Kehre automatisch zum Hauptspiel zurück.
+        ReturnToMainGame();
     }
 
-    private void RestartGame()
+    private void ReturnToMainGame()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        // Ruft die zentrale Methode im SceneController auf, um zum Hauptspiel zurückzukehren.
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.ReturnToMainGame();
+        }
     }
 
     private PieceColor GetCurrentPlayerColor()
