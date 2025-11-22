@@ -203,21 +203,28 @@ public class DameGameManager : MonoBehaviour
             }
         }
 
-        Move chosenMove = bestMoves[Random.Range(0, bestMoves.Count)];
-        PerformMove(chosenMove.piece, chosenMove.toX, chosenMove.toY);
+        // --- Zug ausführen und auf Mehrfachschläge prüfen ---
+        Move currentMove = bestMoves[Random.Range(0, bestMoves.Count)];
+        PerformMove(currentMove.piece, currentMove.toX, currentMove.toY);
 
-        bool wasJump = Mathf.Abs(chosenMove.toX - chosenMove.piece.x) == 2;
+        // Prüfen, ob der ausgeführte Zug ein Sprung war und weitere Sprünge möglich sind
+        bool wasJump = Mathf.Abs(currentMove.toX - currentMove.piece.x) == 2;
         if (wasJump)
         {
-            List<Move> nextJumps = FindJumpsForPiece(chosenMove.piece);
+            List<Move> nextJumps = FindJumpsForPiece(currentMove.piece);
             while (nextJumps.Count > 0)
             {
                 yield return new WaitForSeconds(aiDelay);
-                Move nextMove = nextJumps[Random.Range(0, nextJumps.Count)];
-                PerformMove(nextMove.piece, nextMove.toX, nextMove.toY);
-                nextJumps = FindJumpsForPiece(nextMove.piece);
+                // Bei Mehrfachschlägen muss die KI nicht neu bewerten, da alle Optionen Sprünge sind.
+                // Ein zufälliger Sprung aus den Möglichkeiten ist eine valide Strategie.
+                Move nextChainMove = nextJumps[Random.Range(0, nextJumps.Count)];
+                PerformMove(nextChainMove.piece, nextChainMove.toX, nextChainMove.toY);
+                
+                // Nach dem Kettensprung erneut prüfen, ob weitere Sprünge möglich sind.
+                nextJumps = FindJumpsForPiece(nextChainMove.piece);
             }
         }
+
         SwitchTurnTo(PieceColor.Light);
     }
 
