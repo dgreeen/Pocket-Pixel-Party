@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0ad1bd74e2afea54a919677614b7202b
+guid: 1e957862876ad2f4cae17abe8b0f8ffc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4130640169021434097
-    second: 5_0
+      213: 3594719328623665051
+    second: viergewinntboard_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 5_0
+      name: viergewinntboard_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 1024
-        height: 683
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1f86b71495bf25930800000000000000
-      internalID: 4130640169021434097
+      spriteID: b9f18d90f2203e130800000000000000
+      internalID: 3594719328623665051
       vertices: []
       indices: 
       edges: []
@@ -130,8 +130,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      5_0: 4130640169021434097
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
