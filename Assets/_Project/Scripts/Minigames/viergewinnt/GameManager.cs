@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
         isPlayerTurn = false;
         statusText.text = "Gegner ist am Zug";
 
-        // CPU-Zug mit einer kleinen Verzögerung starten
+        // CPU-Zug mit einer kleinen Verzögerung starten, um die Illusion des Nachdenkens zu erzeugen
         StartCoroutine(CPUTurn());
     }
 
@@ -120,14 +120,10 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f); // Kurze Pause, um den Zug zu simulieren
 
-        int column = -1;
-        // --- Einfache CPU-Logik: Wähle eine zufällige, gültige Spalte ---
-        do
-        {
-            column = Random.Range(0, COLUMNS);
-        } while (GetNextAvailableRow(column) == -1); // Wiederholen, bis eine freie Spalte gefunden wird.
-
+        // Die neue, schlauere Logik, um die beste Spalte zu finden
+        int column = ChooseBestColumn();
         int row = GetNextAvailableRow(column);
+        if (row == -1) yield break; // Sollte nicht passieren, aber sicher ist sicher
 
         // Figur für die CPU instanziieren
         Instantiate(cpuPiecePrefab, spawnPoints[column].transform.position, Quaternion.identity);
@@ -151,6 +147,61 @@ public class GameManager : MonoBehaviour
         isPlayerTurn = true;
         statusText.text = "Du bist am Zug!";
     }
+
+    private int ChooseBestColumn()
+    {
+        // Priorität 1: Kann die CPU gewinnen?
+        for (int c = 0; c < COLUMNS; c++)
+        {
+            int r = GetNextAvailableRow(c);
+            if (r != -1)
+            {
+                grid[c, r] = 2; // Simuliere CPU-Zug
+                if (CheckForWin(2, c, r))
+                {
+                    grid[c, r] = 0; // Simulation zurücksetzen
+                    return c; // Diesen Gewinnzug ausführen!
+                }
+                grid[c, r] = 0; // Simulation zurücksetzen
+            }
+        }
+
+        // Priorität 2: Muss die CPU den Spieler blockieren?
+        for (int c = 0; c < COLUMNS; c++)
+        {
+            int r = GetNextAvailableRow(c);
+            if (r != -1)
+            {
+                grid[c, r] = 1; // Simuliere Spieler-Zug
+                if (CheckForWin(1, c, r))
+                {
+                    grid[c, r] = 0; // Simulation zurücksetzen
+                    return c; // Diesen Block-Zug ausführen!
+                }
+                grid[c, r] = 0; // Simulation zurücksetzen
+            }
+        }
+
+        // Priorität 3: Wähle eine zufällige, gültige Spalte
+        System.Collections.Generic.List<int> availableColumns = new System.Collections.Generic.List<int>();
+        for (int c = 0; c < COLUMNS; c++)
+        {
+            if (GetNextAvailableRow(c) != -1)
+            {
+                availableColumns.Add(c);
+            }
+        }
+        
+        // Wenn es verfügbare Spalten gibt, wähle eine zufällige davon aus.
+        if (availableColumns.Count > 0)
+        {
+            int randomIndex = Random.Range(0, availableColumns.Count);
+            return availableColumns[randomIndex];
+        }
+
+        return 0; // Fallback, sollte nur bei einem vollen Brett erreicht werden.
+    }
+
 
     // Beendet das Spiel
     void EndGame(string message)
