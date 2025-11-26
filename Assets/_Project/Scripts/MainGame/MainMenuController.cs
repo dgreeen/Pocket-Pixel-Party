@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro; // Wichtig für TextMeshPro
 
 public class MainMenuController : MonoBehaviour
 {
     // Name der ersten Spielszene, die geladen werden soll.
     // Passe diesen Namen im Unity Inspector an, falls deine Szene anders heißt.
     [SerializeField] private string settingsSceneName = "SettingsScene";
-    [SerializeField] private string firstLevelSceneName = "SampleScene"; 
+    [SerializeField] private string firstLevelSceneName = "SampleScene";
+    [SerializeField] private TMP_InputField nameInputField; // Referenz zum Eingabefeld
 
     [Header("Audio")]
     [SerializeField] private AudioClip backgroundMusic;
@@ -18,6 +20,13 @@ public class MainMenuController : MonoBehaviour
 
     public void StartGame()
     {
+        // Speichere den Namen aus dem Input-Feld, wenn einer eingegeben wurde.
+        if (PlayerProfile.instance != null && nameInputField != null && !string.IsNullOrWhiteSpace(nameInputField.text))
+        {
+            PlayerProfile.instance.SetPlayerName(nameInputField.text);
+            Debug.Log($"Spielername gesetzt auf: {PlayerProfile.instance.PlayerName}");
+        }
+
         // Lädt die erste Spielszene.
         // Wir verwenden den SceneController, um konsistent zu bleiben.
         // Stelle sicher, dass ein SceneController-Prefab in der MainMenu-Szene ist.

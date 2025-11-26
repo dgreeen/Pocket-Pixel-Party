@@ -55,9 +55,13 @@ public class PongGameManager : MonoBehaviour
         }
 
         // Prüfen, ob jemand gewonnen hat
-        if (playerScore >= scoreToWin || aiScore >= scoreToWin)
+        if (playerScore >= scoreToWin)
         {
-            EndMinigame();
+            EndMinigame(true); // Spieler hat gewonnen
+        }
+        else if (aiScore >= scoreToWin)
+        {
+            EndMinigame(false); // Spieler hat verloren
         }
         else
         {
@@ -89,17 +93,30 @@ public class PongGameManager : MonoBehaviour
         ball.Launch();
     }
 
-    void EndMinigame()
+    // Beispielhafter Code für deine EndMinigame-Methode
+    public void EndMinigame(bool playerWon) 
     {
-        // Stoppe den Ball
-        ball.ResetPosition(); 
-        
         Debug.Log("Pong Minigame beendet!");
-        
-        // Beispiel (musst du an deinen SceneController anpassen):
-        if (sceneController != null)
+
+        // Markiere den Versuch als beendet, damit der MemePoint verschwindet.
+        if (SceneController.instance != null)
         {
-            sceneController.ReturnToMainGame();
+            SceneController.instance.FinishCurrentMinigameAttempt();
+        }
+
+        // NUR WENN DER SPIELER GEWONNEN HAT, schalte die Belohnung frei.
+        if (playerWon)
+        {
+            if (SceneController.instance != null)
+            {
+                SceneController.instance.CompleteCurrentMinigame();
+            }
+        }
+
+        // Kehre zur Hauptszene zurück (egal ob Sieg oder Niederlage).
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.ReturnToMainGame();
         }
     }
 }
