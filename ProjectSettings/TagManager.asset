@@ -47,4 +47,12 @@ TagManager:
     locked: 0
   - name: Pieces
     uniqueID: 817386155
+  - name: Background
+    uniqueID: 4137603815
+    locked: 0
+  - name: Pieces
+    uniqueID: 714303131
+    locked: 0
+  - name: Board
+    uniqueID: 821899359
     locked: 0
