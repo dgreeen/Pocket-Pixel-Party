@@ -1378,8 +1378,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   memePointId: MemePoint_06
-  minigameSceneName: 
-  memeToUnlock: {fileID: 0}
+  minigameSceneName: Pong
+  memeToUnlock: {fileID: 11400000, guid: 3952afcbcea0cb54ca7d39d605e0a00d, type: 2}
 --- !u!61 &1054705960
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -25992,8 +25992,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   memePointId: MemePoint_02
-  minigameSceneName: Pong
-  memeToUnlock: {fileID: 11400000, guid: 3952afcbcea0cb54ca7d39d605e0a00d, type: 2}
+  minigameSceneName: 
+  memeToUnlock: {fileID: 0}
 --- !u!61 &1981879573
 BoxCollider2D:
   m_ObjectHideFlags: 0
