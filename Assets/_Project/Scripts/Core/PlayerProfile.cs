@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO; // Wichtig für Dateioperationen
 using UnityEngine;
 
 public class PlayerProfile : MonoBehaviour
@@ -13,9 +14,8 @@ public class PlayerProfile : MonoBehaviour
 
     private readonly HashSet<string> _unlockedMemeIds = new HashSet<string>();
 
-    // Schlüssel für das Speichern der Daten
-    private const string PlayerNameKey = "PlayerName";
-    private const string UnlockedMemesKey = "UnlockedMemes";
+    private string _savePath;
+
     private void Awake()
     {
         // Singleton-Pattern, um sicherzustellen, dass es nur eine Instanz gibt.
@@ -27,6 +27,9 @@ public class PlayerProfile : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
+
+        // Definiere den Speicherpfad für die JSON-Datei
+        _savePath = Path.Combine(Application.persistentDataPath, "playerProfile.json");
 
         // Lade das gespeicherte Profil beim Start des Spiels
         LoadProfile();
@@ -66,35 +69,46 @@ public class PlayerProfile : MonoBehaviour
 
     private void SaveProfile()
     {
-        // Speichere den Spielernamen
-        PlayerPrefs.SetString(PlayerNameKey, PlayerName);
+        // Erstelle ein Datenobjekt mit den aktuellen Spielerdaten
+        PlayerData data = new PlayerData
+        {
+            playerName = this.PlayerName,
+            unlockedMemeIds = _unlockedMemeIds.ToList() // Konvertiere HashSet zu Liste für die Serialisierung
+        };
 
-        // Wandle das HashSet der Meme-IDs in einen einzigen String um (getrennt durch Kommas)
-        string memeIdsString = string.Join(",", _unlockedMemeIds);
-        PlayerPrefs.SetString(UnlockedMemesKey, memeIdsString);
+        // Wandle das Objekt in einen JSON-String um (true für "pretty print" -> lesbar)
+        string json = JsonUtility.ToJson(data, true);
 
-        // Schreibe die Daten auf die Festplatte
-        PlayerPrefs.Save();
-        Debug.Log("Spielerprofil gespeichert!");
+        // Schreibe den JSON-String in eine Datei
+        File.WriteAllText(_savePath, json);
+
+        Debug.Log($"Spielerprofil gespeichert unter: {_savePath}");
     }
 
     private void LoadProfile()
     {
-        // Lade den Spielernamen, mit "Spieler" als Standardwert, falls nichts gespeichert ist
-        PlayerName = PlayerPrefs.GetString(PlayerNameKey, "Spieler");
-
-        // Lade den String der Meme-IDs
-        string memeIdsString = PlayerPrefs.GetString(UnlockedMemesKey, "");
-        if (!string.IsNullOrEmpty(memeIdsString))
+        if (File.Exists(_savePath))
         {
-            // Lösche alte Einträge, bevor neue geladen werden
+            // Lese den JSON-String aus der Datei
+            string json = File.ReadAllText(_savePath);
+
+            // Wandle den JSON-String zurück in ein PlayerData-Objekt
+            PlayerData data = JsonUtility.FromJson<PlayerData>(json);
+
+            // Lade die Daten in das aktuelle Profil
+            PlayerName = data.playerName;
             _unlockedMemeIds.Clear();
-            // Spalte den String wieder in einzelne IDs auf und füge sie dem HashSet hinzu
-            List<string> memeIds = memeIdsString.Split(',').ToList();
-            foreach (var id in memeIds) {
-                _unlockedMemeIds.Add(id);
+            foreach (var memeId in data.unlockedMemeIds)
+            {
+                _unlockedMemeIds.Add(memeId);
             }
+            Debug.Log($"Spielerprofil geladen von: {_savePath}");
         }
-        Debug.Log("Spielerprofil geladen!");
+        else
+        {
+            // Falls keine Speicherdatei existiert, setze Standardwerte
+            PlayerName = "Spieler";
+            Debug.Log("Kein Speicherstand gefunden. Neues Profil wird erstellt.");
+        }
     }
 }
