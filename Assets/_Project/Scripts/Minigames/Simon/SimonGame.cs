@@ -32,7 +32,6 @@ public class SimonGame : MonoBehaviour
     private List<int> sequence = new List<int>();
     private int playerInputIndex;
     private bool isPlayerTurn = false;
-    private bool gameIsActive = false;
 
     private Color[] originalColors;
 
@@ -62,12 +61,10 @@ public class SimonGame : MonoBehaviour
         statusText.text = "Klicke Start!";
         startButton.gameObject.SetActive(true);
         SetButtonsInteractable(false);
-        gameIsActive = false;
     }
 
     private void StartGame()
     {
-        gameIsActive = true;
         startButton.gameObject.SetActive(false);
         sequence.Clear();
         currentSequenceDisplaySpeed = initialSequenceDisplaySpeed;
@@ -146,7 +143,6 @@ public class SimonGame : MonoBehaviour
 
     private void WinGame()
     {
-        gameIsActive = false;
         isPlayerTurn = false;
         SetButtonsInteractable(false);
         statusText.text = "Gewonnen! Geniale Merkrate!";
@@ -156,7 +152,6 @@ public class SimonGame : MonoBehaviour
 
     private void GameOver()
     {
-        gameIsActive = false;
         isPlayerTurn = false;
         SetButtonsInteractable(false);
         statusText.text = $"Spiel vorbei! Deine Punktzahl: {sequence.Count - 1}";
