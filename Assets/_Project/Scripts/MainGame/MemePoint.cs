@@ -1,19 +1,23 @@
-
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
 public class MemePoint : MonoBehaviour
-{
-    [Tooltip("Eine eindeutige ID für diesen MemePoint, z.B. 'MemePoint_Level1_01'")]
+{    
+    [Tooltip("Eine eindeutige ID für diesen Punkt, z.B. 'MemePoint1'")]
     public string memePointId;
 
-    [Tooltip("Der Name der Minispiel-Szene, die geladen werden soll (z.B. 'Pong' oder 'Minesweeper').")]
-    public string sceneToLoad;
-    void OnTriggerEnter2D(Collider2D collision)
+    [Tooltip("Der Name der Minispiel-Szene, die geladen werden soll.")]
+    public string minigameSceneName;
+
+    [Tooltip("Das Meme, das durch diesen Punkt freigeschaltet wird.")]
+    public MemeData memeToUnlock;
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.CompareTag("Player"))
+        // Prüfen, ob das kollidierende Objekt der Spieler ist.
+        if (other.CompareTag("Player"))
         {
-            SceneController.instance.EnterMinigame(memePointId, transform.position, sceneToLoad);
+            // Starte das Minispiel über den SceneController und übergib dieses MemePoint-Objekt.
+            SceneController.instance.EnterMinigame(this, transform.position);
         }
     }
 }
