@@ -7,7 +7,8 @@ public class MainMenuController : MonoBehaviour
     // Passe diesen Namen im Unity Inspector an, falls deine Szene anders heißt.
     [SerializeField] private string settingsSceneName = "SettingsScene";
     [SerializeField] private string firstLevelSceneName = "SampleScene"; 
-
+    [SerializeField] private string characterSelectionSceneName = "CharacterSelectionScene";
+    
     [Header("Audio")]
     [SerializeField] private AudioClip backgroundMusic;
 
@@ -27,9 +28,11 @@ public class MainMenuController : MonoBehaviour
 
     public void OpenCharacterSelection()
     {
-        // Hier könntest du eine Szene für die Charakterauswahl laden.
-        // SceneManager.LoadScene("CharacterSelection");
-        Debug.Log("Charakterauswahl-Szene öffnen (noch nicht implementiert).");
+        // Lädt die Szene für die Charakterauswahl.
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.LoadScene(characterSelectionSceneName);
+        }
     }
 
     public void OpenSettings()
