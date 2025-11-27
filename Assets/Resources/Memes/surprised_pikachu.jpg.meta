@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1e957862876ad2f4cae17abe8b0f8ffc
+guid: 48f0a818057047f4793efb34ea8c2e53
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3594719328623665051
-    second: viergewinntboard_0
+      213: 397432318846741469
+    second: surprised_pikachu_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: viergewinntboard_0
+      name: surprised_pikachu_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 1731
+        height: 1500
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b9f18d90f2203e130800000000000000
-      internalID: 3594719328623665051
+      spriteID: ddbae1b9696f38500800000000000000
+      internalID: 397432318846741469
       vertices: []
       indices: 
       edges: []
@@ -130,8 +130,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      viergewinntboard_0: 3594719328623665051
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

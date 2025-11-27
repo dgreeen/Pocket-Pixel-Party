@@ -1,10 +1,18 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.Audio;
 
 public class SettingsMenuController : MonoBehaviour
 {
+    [Header("Scene Names")]
+    [Tooltip("Der Name der Hauptmenü-Szene.")]
+    [SerializeField] private string mainMenuSceneName = "MainMenu";
+
+    [Header("Player Settings")]
+    [Tooltip("Das Eingabefeld für den Spielernamen.")]
+    [SerializeField] private TMP_InputField nameInputField;
 
     [Header("Audio Settings")]
     [Tooltip("Der AudioMixer, der die Lautstärke regelt.")]
@@ -20,6 +28,12 @@ public class SettingsMenuController : MonoBehaviour
     private void Start()
     {
         // Lade die gespeicherte Lautstärke und setze den Slider entsprechend.
+        LoadAndApplyVolumeSettings();
+
+        // Lade den aktuellen Spielernamen in das Eingabefeld.
+        LoadPlayerName();
+    }
+    private void LoadAndApplyVolumeSettings() {
         // Der Standardwert ist 1.0f (volle Lautstärke).
         float savedVolume = PlayerPrefs.GetFloat(MASTER_VOLUME_PREF, 1.0f);
         if (masterVolumeSlider != null)
@@ -28,6 +42,15 @@ public class SettingsMenuController : MonoBehaviour
         }
         // Wichtig: Setze auch die Lautstärke im Mixer direkt beim Start.
         SetMasterVolume(savedVolume);
+    }
+
+    private void LoadPlayerName()
+    {
+        if (PlayerProfile.instance != null && nameInputField != null)
+        {
+            // Zeige den aktuellen Namen des Spielers im Eingabefeld an.
+            nameInputField.text = PlayerProfile.instance.PlayerName;
+        }
     }
 
     public void BackToMainMenu()
@@ -55,5 +78,32 @@ public class SettingsMenuController : MonoBehaviour
 
         // Speichere die Einstellung für zukünftige Spielsitzungen.
         PlayerPrefs.SetFloat(MASTER_VOLUME_PREF, volume);
+    }
+
+    /// <summary>
+    /// Wird vom "Speichern"-Button aufgerufen, um den Namen zu ändern.
+    /// </summary>
+    public void ChangePlayerName()
+    {
+        if (PlayerProfile.instance != null && nameInputField != null && !string.IsNullOrWhiteSpace(nameInputField.text))
+        {
+            PlayerProfile.instance.SetPlayerName(nameInputField.text);
+            Debug.Log($"Spielername geändert zu: {nameInputField.text}");
+            // Optional: Gib dem Spieler visuelles Feedback, z.B. "Gespeichert!".
+        }
+    }
+
+    /// <summary>
+    /// Wird vom "Neuer Spieler"-Button aufgerufen. Löscht das Profil und kehrt zum Hauptmenü zurück.
+    /// </summary>
+    public void ResetGame()
+    {
+        if (PlayerProfile.instance != null)
+        {
+            PlayerProfile.instance.DeleteProfile();
+        }
+
+        // Kehre zum Hauptmenü zurück. Da kein Profil mehr existiert, wird die Namenseingabe erscheinen.
+        SceneController.instance.LoadScene(mainMenuSceneName);
     }
 }
