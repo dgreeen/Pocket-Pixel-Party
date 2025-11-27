@@ -41,6 +41,9 @@ public class MemeUnlockUI : MonoBehaviour
         Debug.Log("MemeUnlockUI hat das Event 'Meme freigeschaltet' empfangen!");
         if (unlockedMeme != null && unlockedMeme.memeSprite != null)
         {
+            // Stellt sicher, dass das Bild sein Seitenverhältnis beibehält und nicht verzerrt wird.
+            memeImage.preserveAspect = true;
+
             memeImage.sprite = unlockedMeme.memeSprite;
             memeNameText.text = unlockedMeme.displayName;
             StartCoroutine(ShowUnlockPanel());
