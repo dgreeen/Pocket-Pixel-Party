@@ -87,6 +87,11 @@ public class PlayerProfile : MonoBehaviour
 
     private void LoadProfile()
     {
+        // Setze die Daten zurück, bevor du versuchst zu laden.
+        // Das stellt sicher, dass wir einen sauberen Zustand haben, falls die Datei nicht existiert.
+        this.PlayerName = null;
+        this._unlockedMemeIds.Clear();
+
         if (File.Exists(_savePath))
         {
             // Lese den JSON-String aus der Datei
@@ -96,19 +101,28 @@ public class PlayerProfile : MonoBehaviour
             PlayerData data = JsonUtility.FromJson<PlayerData>(json);
 
             // Lade die Daten in das aktuelle Profil
-            PlayerName = data.playerName;
-            _unlockedMemeIds.Clear();
+            this.PlayerName = data.playerName;
             foreach (var memeId in data.unlockedMemeIds)
             {
                 _unlockedMemeIds.Add(memeId);
             }
             Debug.Log($"Spielerprofil geladen von: {_savePath}");
         }
-        else
+    }
+
+    /// <summary>
+    /// Löscht die Speicherdatei des Spielerprofils und setzt die aktuellen Daten im Speicher zurück.
+    /// </summary>
+    public void DeleteProfile()
+    {
+        if (File.Exists(_savePath))
         {
-            // Falls keine Speicherdatei existiert, setze Standardwerte
-            PlayerName = "Spieler";
-            Debug.Log("Kein Speicherstand gefunden. Neues Profil wird erstellt.");
+            File.Delete(_savePath);
+            Debug.LogWarning($"Spielerprofil gelöscht von: {_savePath}");
         }
+
+        // Setze auch die In-Memory-Daten zurück, um den Zustand sofort zu aktualisieren.
+        this.PlayerName = null;
+        this._unlockedMemeIds.Clear();
     }
 }
