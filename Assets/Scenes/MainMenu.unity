@@ -2795,6 +2795,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingsSceneName: SettingsScene
   firstLevelSceneName: SampleScene
+  characterSelectionSceneName: CharacterSelcetionScene
   nameInputPanel: {fileID: 1251504670}
   mainMenuPanel: {fileID: 693859827}
   memeGalleryPanel: {fileID: 394142733}

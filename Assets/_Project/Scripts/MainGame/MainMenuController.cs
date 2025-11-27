@@ -7,7 +7,9 @@ public class MainMenuController : MonoBehaviour
     // Name der ersten Spielszene, die geladen werden soll.
     // Passe diesen Namen im Unity Inspector an, falls deine Szene anders heißt.
     [SerializeField] private string settingsSceneName = "SettingsScene";
-    [SerializeField] private string firstLevelSceneName = "SampleScene";
+    [SerializeField] private string firstLevelSceneName = "SampleScene"; 
+    [SerializeField] private string characterSelectionSceneName = "CharacterSelectionScene";
+    
 
     [Header("UI Panels")]
     [SerializeField] private GameObject nameInputPanel; // Panel für die Namenseingabe
@@ -71,9 +73,11 @@ public class MainMenuController : MonoBehaviour
 
     public void OpenCharacterSelection()
     {
-        // Hier könntest du eine Szene für die Charakterauswahl laden.
-        // SceneManager.LoadScene("CharacterSelection");
-        Debug.Log("Charakterauswahl-Szene öffnen (noch nicht implementiert).");
+        // Lädt die Szene für die Charakterauswahl.
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.LoadScene(characterSelectionSceneName);
+        }
     }
 
     public void OpenSettings()
