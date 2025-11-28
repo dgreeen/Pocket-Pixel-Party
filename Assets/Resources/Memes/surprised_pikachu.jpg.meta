@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      surprised_pikachu_0: 397432318846741469
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
