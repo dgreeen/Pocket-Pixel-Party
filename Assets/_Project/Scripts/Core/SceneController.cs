@@ -12,6 +12,7 @@ public class SceneController : MonoBehaviour
     private string _currentMemePointId; // Merkt sich die ID des aktuellen Minispiels
     private MemeData _currentMemeToUnlock; // Merkt sich das Meme, das freigeschaltet werden kann
     private string _previousSceneName;
+    private Vector3? _lastPlayerPositionInMainWorld = null; // Speichert die letzte Spielerposition
     private bool _minigameWasWon = false; // NEU: Merker für den Sieg
     
     private void Awake()
@@ -108,19 +109,52 @@ public class SceneController : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Speichert die aktuelle Spielerposition und kehrt zum Hauptmenü zurück.
+    /// </summary>
+    public void ReturnToMainMenuAndSavePosition()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            _lastPlayerPositionInMainWorld = player.transform.position;
+            Debug.Log($"Spielerposition gespeichert: {_lastPlayerPositionInMainWorld.Value}");
+        }
+        else
+        {
+            Debug.LogWarning("Spieler nicht gefunden. Position konnte nicht gespeichert werden.");
+        }
+
+        LoadScene("MainMenu"); // Lade die Hauptmenü-Szene
+    }
+    
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Prüfen, ob wir zur Hauptszene zurückkehren.
-        if (scene.name == _mainSceneName) {
-            
-            // Finde den Spieler und setze seine Position
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
-            {
-                // Setze den Spieler auf die exakte Respawn-Position zurück.
-                player.transform.position = _respawnPosition;
-            }
+        // Finde den Spieler in der neu geladenen Szene
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
 
+        if (player != null)
+        {
+            // PRIORITÄT 1: Aus dem Hauptmenü zurückkehren
+            if (_lastPlayerPositionInMainWorld.HasValue)
+            {
+                player.transform.position = _lastPlayerPositionInMainWorld.Value;
+                Debug.Log($"Spieler an gespeicherter Position {_lastPlayerPositionInMainWorld.Value} wiederhergestellt.");
+                // Position nach Verwendung zurücksetzen, damit es beim nächsten Mal nicht wieder passiert.
+                _lastPlayerPositionInMainWorld = null;
+            }
+            // PRIORITÄT 2: Aus einem Minispiel zurückkehren
+            else if (scene.name == _mainSceneName && _respawnPosition != Vector3.zero)
+            {
+                // Setze den Spieler auf die Respawn-Position des Minispiels zurück.
+                player.transform.position = _respawnPosition;
+                Debug.Log($"Spieler an Minispiel-Respawn-Position {_respawnPosition} gesetzt.");
+            }
+        }
+
+        // Dieser Teil ist unabhängig von der Spielerposition und sollte immer ausgeführt werden,
+        // wenn wir in die Hauptszene kommen (z.B. um Belohnungen zu geben oder MemePoints zu entfernen).
+        if (scene.name == _mainSceneName) {
             // NEU: Prüfen, ob eine Belohnung aussteht.
             if (_minigameWasWon && PlayerProfile.instance != null)
             {

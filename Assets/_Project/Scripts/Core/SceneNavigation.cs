@@ -27,7 +27,15 @@ public class SceneNavigation : MonoBehaviour
     /// </summary>
     public void LoadMainMenuScene()
     {
-        Debug.Log($"Versuche, Szene zu laden: '{mainMenuSceneName}'");
-        SceneManager.LoadScene(mainMenuSceneName);
+        // Prüfen, ob ein SceneController existiert, um die Position zu speichern
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.ReturnToMainMenuAndSavePosition();
+        }
+        else
+        {
+            // Fallback, falls kein SceneController da ist (z.B. in einem Minispiel ohne Rückkehrpunkt)
+            SceneManager.LoadScene(mainMenuSceneName);
+        }
     }
 }
