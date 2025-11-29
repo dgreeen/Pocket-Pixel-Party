@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO; // Wichtig für Dateioperationen
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerProfile : MonoBehaviour
 {
@@ -11,10 +12,12 @@ public class PlayerProfile : MonoBehaviour
     public event Action<MemeData> OnMemeDataUnlocked;
 
     public string PlayerName { get; private set; }
+    public float MasterVolume { get; private set; } = 1.0f; // Standardwert 1.0f
 
     private readonly HashSet<string> _unlockedMemeIds = new HashSet<string>();
 
     private string _savePath;
+    private AudioMixer _mainAudioMixer;
 
     private void Awake()
     {
@@ -31,8 +34,17 @@ public class PlayerProfile : MonoBehaviour
         // Definiere den Speicherpfad für die JSON-Datei
         _savePath = Path.Combine(Application.persistentDataPath, "playerProfile.json");
 
+        // Finde den AudioMixer robust, anstatt auf eine Zuweisung im Inspector zu hoffen.
+        FindMainAudioMixer();
+
         // Lade das gespeicherte Profil beim Start des Spiels
         LoadProfile();
+    }
+
+    private void Start()
+    {
+        // Wende die geladene Lautstärke an, NACHDEM alle Awake-Methoden und die Audio-Engine-Initialisierung (inkl. Snapshots) abgeschlossen sind.
+        ApplyMasterVolume();
     }
 
     public void SetPlayerName(string newName)
@@ -41,6 +53,12 @@ public class PlayerProfile : MonoBehaviour
 
         PlayerName = newName;
         // Speichere das Profil, wenn der Name geändert wird
+        SaveProfile();
+    }
+
+    public void SetMasterVolume(float newVolume)
+    {
+        MasterVolume = Mathf.Clamp(newVolume, 0.0f, 1.0f);
         SaveProfile();
     }
 
@@ -67,12 +85,22 @@ public class PlayerProfile : MonoBehaviour
         return _unlockedMemeIds.Contains(memeId);
     }
 
+    // Private Klasse zur Kapselung der zu speichernden Daten
+    [Serializable]
+    private class PlayerData
+    {
+        public string playerName;
+        public List<string> unlockedMemeIds;
+        public float masterVolume;
+    }
+
     private void SaveProfile()
     {
         // Erstelle ein Datenobjekt mit den aktuellen Spielerdaten
         PlayerData data = new PlayerData
         {
             playerName = this.PlayerName,
+            masterVolume = this.MasterVolume,
             unlockedMemeIds = _unlockedMemeIds.ToList() // Konvertiere HashSet zu Liste für die Serialisierung
         };
 
@@ -90,7 +118,8 @@ public class PlayerProfile : MonoBehaviour
         // Setze die Daten zurück, bevor du versuchst zu laden.
         // Das stellt sicher, dass wir einen sauberen Zustand haben, falls die Datei nicht existiert.
         this.PlayerName = null;
-        this._unlockedMemeIds.Clear();
+        this.MasterVolume = 1.0f; // Setze auf Standardwert
+        this._unlockedMemeIds.Clear();        
 
         if (File.Exists(_savePath))
         {
@@ -102,11 +131,13 @@ public class PlayerProfile : MonoBehaviour
 
             // Lade die Daten in das aktuelle Profil
             this.PlayerName = data.playerName;
+            this.MasterVolume = data.masterVolume;
             foreach (var memeId in data.unlockedMemeIds)
             {
                 _unlockedMemeIds.Add(memeId);
             }
             Debug.Log($"Spielerprofil geladen von: {_savePath}");
+
         }
     }
 
@@ -123,6 +154,52 @@ public class PlayerProfile : MonoBehaviour
 
         // Setze auch die In-Memory-Daten zurück, um den Zustand sofort zu aktualisieren.
         this.PlayerName = null;
+        this.MasterVolume = 1.0f;
         this._unlockedMemeIds.Clear();
+    }
+
+    /// <summary>
+    /// Setzt den MasterVolume-Wert auf den AudioMixer.
+    /// </summary>
+    public void ApplyMasterVolume()
+    {
+        if (_mainAudioMixer != null)
+        {
+            float safeVolume = Mathf.Clamp(MasterVolume, 0.0001f, 1.0f);
+            _mainAudioMixer.SetFloat("MasterVolume", Mathf.Log10(safeVolume) * 20);
+            Debug.Log($"MasterVolume auf {_mainAudioMixer.name} gesetzt: {MasterVolume}");
+        }
+        else
+        {
+            Debug.LogWarning("Konnte MasterVolume nicht anwenden: Kein AudioMixer gefunden!");
+        }
+    }
+
+    private void FindMainAudioMixer()
+    {
+        if (_mainAudioMixer != null) return;
+
+        // Finde alle AudioMixer-Assets, die im Projekt geladen sind.
+        // Diese Methode ist robust und erfordert nicht, dass der Mixer in einem "Resources"-Ordner liegt.
+        var audioMixers = Resources.FindObjectsOfTypeAll<AudioMixer>();
+        if (audioMixers.Length == 0)
+        {
+            Debug.LogError("Kein AudioMixer im Projekt gefunden!");
+            return;
+        }
+
+        // Suche nach dem Mixer mit dem spezifischen Namen "MainMixer".
+        foreach (var mixer in audioMixers)
+        {
+            if (mixer.name == "MainMixer")
+            {
+                _mainAudioMixer = mixer;
+                break; // Wir haben ihn gefunden, die Schleife kann beendet werden.
+            }
+        }
+
+        if (_mainAudioMixer == null) {
+            Debug.LogError("Ein AudioMixer mit dem Namen 'MainMixer' konnte nicht gefunden werden. Bitte den Namen überprüfen!");
+        }
     }
 }
