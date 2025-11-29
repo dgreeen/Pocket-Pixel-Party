@@ -33,20 +33,27 @@ public class Ball : MonoBehaviour
     // Sorgt für Variation beim Abprall
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("AI"))
+        // Prüfen, ob der Ball ein Paddle getroffen hat
+        if (collision.transform.CompareTag("Player") || collision.transform.CompareTag("AI"))
         {
-            // Wir lassen die Physik-Engine den Abprall berechnen.
-            // Unser Job ist es nur, die Geschwindigkeit nach dem Abprall zu erhöhen.
-            // Wir machen das im nächsten Frame, um sicherzustellen, dass die Physik-Kalkulation abgeschlossen ist.
-            Invoke(nameof(IncreaseSpeedAfterBounce), 0f);
+            // Geschwindigkeit erhöhen
+            IncreaseSpeed();
+
+            // Winkel anpassen, um zu flache Winkel zu vermeiden
+            Vector2 velocity = rb.velocity;
+            float minVerticalVelocity = rb.velocity.magnitude * 0.2f; // Mindestens 20% der Geschwindigkeit vertikal
+
+            if (Mathf.Abs(velocity.y) < minVerticalVelocity)
+            {
+                velocity.y = Mathf.Sign(velocity.y) * minVerticalVelocity;
+                rb.velocity = velocity;
+            }
         }
     }
 
-    private void IncreaseSpeedAfterBounce()
+    private void IncreaseSpeed()
     {
-        // Nimm die aktuelle Geschwindigkeit (nach dem Abprall) und erhöhe sie.
-        float currentSpeed = rb.velocity.magnitude;
-        float newSpeed = Mathf.Clamp(currentSpeed + speedIncreasePerHit, startSpeed, maxSpeed);
+        float newSpeed = Mathf.Clamp(rb.velocity.magnitude + speedIncreasePerHit, startSpeed, maxSpeed);
         rb.velocity = rb.velocity.normalized * newSpeed;
     }
 }

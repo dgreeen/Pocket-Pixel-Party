@@ -13,6 +13,7 @@ public class AIPaddle : MonoBehaviour
     [Header("Grenzen")]
     public Transform topWall;
     public Transform bottomWall;
+    public float boundaryOffset = 0.1f; // Kleiner Puffer zur Wand
 
     private float paddleHeight;
     private float topBoundary;
@@ -26,8 +27,8 @@ public class AIPaddle : MonoBehaviour
         paddleHeight = transform.localScale.y / 2;
 
         // Berechne die Bewegungsgrenzen basierend auf den Wänden
-        topBoundary = topWall.position.y - paddleHeight;
-        bottomBoundary = bottomWall.position.y + paddleHeight;
+        topBoundary = topWall.position.y - paddleHeight - boundaryOffset;
+        bottomBoundary = bottomWall.position.y + paddleHeight + boundaryOffset;
     }
 
     void FixedUpdate()
