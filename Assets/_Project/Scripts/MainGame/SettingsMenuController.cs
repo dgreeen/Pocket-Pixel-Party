@@ -22,26 +22,23 @@ public class SettingsMenuController : MonoBehaviour
 
     // Der Name des Parameters, den wir im AudioMixer verfügbar machen.
     private const string MASTER_VOLUME_KEY = "MasterVolume";
-    // Der Schlüssel zum Speichern des Werts in den PlayerPrefs.
-    private const string MASTER_VOLUME_PREF = "MasterVolumePreference";
 
     private void Start()
     {
-        // Lade die gespeicherte Lautstärke und setze den Slider entsprechend.
-        LoadAndApplyVolumeSettings();
+        // Lade die gespeicherte Lautstärke und setze den Slider-Wert.
+        // Die Lautstärke selbst wurde bereits beim Spielstart durch den GameInitializer gesetzt.
+        LoadVolumeSetting();
 
         // Lade den aktuellen Spielernamen in das Eingabefeld.
         LoadPlayerName();
     }
-    private void LoadAndApplyVolumeSettings() {
-        // Der Standardwert ist 1.0f (volle Lautstärke).
-        float savedVolume = PlayerPrefs.GetFloat(MASTER_VOLUME_PREF, 1.0f);
-        if (masterVolumeSlider != null)
+
+    private void LoadVolumeSetting() {
+        // Lade den Wert aus dem PlayerProfile
+        if (PlayerProfile.instance != null && masterVolumeSlider != null)
         {
-            masterVolumeSlider.value = savedVolume;
+            masterVolumeSlider.value = PlayerProfile.instance.MasterVolume;
         }
-        // Wichtig: Setze auch die Lautstärke im Mixer direkt beim Start.
-        SetMasterVolume(savedVolume);
     }
 
     private void LoadPlayerName()
@@ -76,8 +73,11 @@ public class SettingsMenuController : MonoBehaviour
         // Wir konvertieren den linearen Slider-Wert in einen logarithmischen dB-Wert.
         audioMixer.SetFloat(MASTER_VOLUME_KEY, Mathf.Log10(safeVolume) * 20);
 
-        // Speichere die Einstellung für zukünftige Spielsitzungen.
-        PlayerPrefs.SetFloat(MASTER_VOLUME_PREF, volume);
+        // Speichere die Einstellung im Spielerprofil.
+        if (PlayerProfile.instance != null)
+        {
+            PlayerProfile.instance.SetMasterVolume(volume);
+        }
     }
 
     /// <summary>
