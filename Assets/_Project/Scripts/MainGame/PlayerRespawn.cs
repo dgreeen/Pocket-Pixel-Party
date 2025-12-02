@@ -1,47 +1,26 @@
 using UnityEngine;
 
+/// <summary>
+/// Dieses Skript merkt sich die Startposition des Spielers
+/// und bietet eine Methode zum Zurücksetzen an.
+/// </summary>
 public class PlayerRespawn : MonoBehaviour
 {
-    [Tooltip("Die Y-Koordinate, unter der der Spieler als 'gefallen' gilt und respawnt.")]
-    public float deathZoneY = -20f;
+    private Vector3 _startPosition;
+    private Quaternion _startRotation;
 
-    private Vector3 respawnPoint;
-    private Rigidbody2D rb;
-
-    void Start()
+    void Awake()
     {
-        // Wir speichern die Startposition als ersten Respawn-Punkt.
-        respawnPoint = transform.position;
-        rb = GetComponent<Rigidbody2D>();
+        // Speichere die initiale Position und Rotation, wenn der Spieler erstellt wird.
+        _startPosition = transform.position;
+        _startRotation = transform.rotation;
     }
 
-    void Update()
+    public void Respawn()
     {
-        // Prüfen, ob der Spieler unter die Todeszone gefallen ist.
-        if (transform.position.y < deathZoneY)
-        {
-            Respawn();
-        }
-    }
-
-    void Respawn()
-    {
-        // Setze die Position des Spielers zurück.
-        transform.position = respawnPoint;
-
-        // Setze die Geschwindigkeit des Rigidbodys zurück, damit der Spieler nicht weiterfällt.
-        if (rb != null)
-        {
-            rb.velocity = Vector2.zero;
-        }
-        
-        Debug.Log("Spieler ist gefallen und wurde zurückgesetzt.");
-    }
-
-    // Diese Methode kann von anderen Skripten aufgerufen werden, um den Respawn-Punkt zu aktualisieren.
-    // Zum Beispiel nach dem Erreichen eines Checkpoints.
-    public void SetRespawnPoint(Vector3 newPosition)
-    {
-        respawnPoint = newPosition;
+        // Setze die Position und Rotation des Spielers auf die gespeicherten Startwerte zurück.
+        transform.position = _startPosition;
+        transform.rotation = _startRotation;
+        Debug.Log($"Spieler wurde an Startposition {_startPosition} zurückgesetzt.");
     }
 }
