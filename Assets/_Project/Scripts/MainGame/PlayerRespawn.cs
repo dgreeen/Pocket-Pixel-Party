@@ -11,9 +11,18 @@ public class PlayerRespawn : MonoBehaviour
 
     void Awake()
     {
-        // Speichere die initiale Position und Rotation, wenn der Spieler erstellt wird.
-        _startPosition = transform.position;
-        _startRotation = transform.rotation;
+        // Finde den offiziellen Startpunkt in der Szene.
+        GameObject startPointObject = GameObject.FindGameObjectWithTag("Respawn");
+        if (startPointObject != null)
+        {
+            _startPosition = startPointObject.transform.position;
+        }
+        else
+        {
+            Debug.LogWarning("Kein GameObject mit dem Tag 'Respawn' in der Szene gefunden. Verwende die initiale Spielerposition als Fallback.");
+            _startPosition = transform.position;
+        }
+        _startRotation = Quaternion.identity; // Setze die Rotation auf einen Standardwert zurück.
     }
 
     public void Respawn()
