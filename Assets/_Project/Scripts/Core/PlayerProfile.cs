@@ -10,11 +10,13 @@ public class PlayerProfile : MonoBehaviour
     public static PlayerProfile instance;
 
     public event Action<MemeData> OnMemeDataUnlocked;
+    public event Action<string> OnCharacterSelected; // NEU: Event für Charakterauswahl
 
     public string PlayerName { get; private set; }
     public float MasterVolume { get; private set; } = 1.0f; // Standardwert 1.0f
 
     private readonly HashSet<string> _unlockedMemeIds = new HashSet<string>();
+    private string _selectedCharacterId;
 
     private string _savePath;
     private AudioMixer _mainAudioMixer;
@@ -62,6 +64,15 @@ public class PlayerProfile : MonoBehaviour
         SaveProfile();
     }
 
+    // NEU: Methode zum Setzen des ausgewählten Charakters
+    public void SetSelectedCharacter(string characterId)
+    {
+        if (string.IsNullOrWhiteSpace(characterId)) return;
+        _selectedCharacterId = characterId;
+        OnCharacterSelected?.Invoke(characterId);
+        SaveProfile();
+    }
+
     public bool UnlockMeme(MemeData memeToUnlock)
     {
         if (memeToUnlock == null || string.IsNullOrEmpty(memeToUnlock.memeId))
@@ -92,6 +103,7 @@ public class PlayerProfile : MonoBehaviour
         public string playerName;
         public List<string> unlockedMemeIds;
         public float masterVolume;
+        public string selectedCharacterId; // NEU: Füge dieses Feld hinzu
     }
 
     private void SaveProfile()
@@ -99,8 +111,9 @@ public class PlayerProfile : MonoBehaviour
         // Erstelle ein Datenobjekt mit den aktuellen Spielerdaten
         PlayerData data = new PlayerData
         {
-            playerName = this.PlayerName,
-            masterVolume = this.MasterVolume,
+            playerName = PlayerName,
+            masterVolume = MasterVolume, // Füge die Lautstärke hinzu
+            selectedCharacterId = _selectedCharacterId, // Speichere den ausgewählten Charakter
             unlockedMemeIds = _unlockedMemeIds.ToList() // Konvertiere HashSet zu Liste für die Serialisierung
         };
 
@@ -119,7 +132,8 @@ public class PlayerProfile : MonoBehaviour
         // Das stellt sicher, dass wir einen sauberen Zustand haben, falls die Datei nicht existiert.
         this.PlayerName = null;
         this.MasterVolume = 1.0f; // Setze auf Standardwert
-        this._unlockedMemeIds.Clear();        
+        this._unlockedMemeIds.Clear();
+        this._selectedCharacterId = "default"; // Setze auf Standardwert
 
         if (File.Exists(_savePath))
         {
@@ -129,6 +143,7 @@ public class PlayerProfile : MonoBehaviour
             // Wandle den JSON-String zurück in ein PlayerData-Objekt
             PlayerData data = JsonUtility.FromJson<PlayerData>(json);
 
+            this._selectedCharacterId = data.selectedCharacterId; // Lade den ausgewählten Charakter
             // Lade die Daten in das aktuelle Profil
             this.PlayerName = data.playerName;
             this.MasterVolume = data.masterVolume;
@@ -156,6 +171,7 @@ public class PlayerProfile : MonoBehaviour
         this.PlayerName = null;
         this.MasterVolume = 1.0f;
         this._unlockedMemeIds.Clear();
+        this._selectedCharacterId = "default"; // Setze auf Standardwert
     }
 
     /// <summary>
