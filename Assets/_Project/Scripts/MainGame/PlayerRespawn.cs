@@ -1,47 +1,35 @@
 using UnityEngine;
 
+/// <summary>
+/// Dieses Skript merkt sich die Startposition des Spielers
+/// und bietet eine Methode zum Zurücksetzen an.
+/// </summary>
 public class PlayerRespawn : MonoBehaviour
 {
-    [Tooltip("Die Y-Koordinate, unter der der Spieler als 'gefallen' gilt und respawnt.")]
-    public float deathZoneY = -20f;
+    private Vector3 _startPosition;
+    private Quaternion _startRotation;
 
-    private Vector3 respawnPoint;
-    private Rigidbody2D rb;
-
-    void Start()
+    void Awake()
     {
-        // Wir speichern die Startposition als ersten Respawn-Punkt.
-        respawnPoint = transform.position;
-        rb = GetComponent<Rigidbody2D>();
-    }
-
-    void Update()
-    {
-        // Prüfen, ob der Spieler unter die Todeszone gefallen ist.
-        if (transform.position.y < deathZoneY)
+        // Finde den offiziellen Startpunkt in der Szene.
+        GameObject startPointObject = GameObject.FindGameObjectWithTag("Respawn");
+        if (startPointObject != null)
         {
-            Respawn();
+            _startPosition = startPointObject.transform.position;
         }
-    }
-
-    void Respawn()
-    {
-        // Setze die Position des Spielers zurück.
-        transform.position = respawnPoint;
-
-        // Setze die Geschwindigkeit des Rigidbodys zurück, damit der Spieler nicht weiterfällt.
-        if (rb != null)
+        else
         {
-            rb.velocity = Vector2.zero;
+            Debug.LogWarning("Kein GameObject mit dem Tag 'Respawn' in der Szene gefunden. Verwende die initiale Spielerposition als Fallback.");
+            _startPosition = transform.position;
         }
-        
-        Debug.Log("Spieler ist gefallen und wurde zurückgesetzt.");
+        _startRotation = Quaternion.identity; // Setze die Rotation auf einen Standardwert zurück.
     }
 
-    // Diese Methode kann von anderen Skripten aufgerufen werden, um den Respawn-Punkt zu aktualisieren.
-    // Zum Beispiel nach dem Erreichen eines Checkpoints.
-    public void SetRespawnPoint(Vector3 newPosition)
+    public void Respawn()
     {
-        respawnPoint = newPosition;
+        // Setze die Position und Rotation des Spielers auf die gespeicherten Startwerte zurück.
+        transform.position = _startPosition;
+        transform.rotation = _startRotation;
+        Debug.Log($"Spieler wurde an Startposition {_startPosition} zurückgesetzt.");
     }
 }
