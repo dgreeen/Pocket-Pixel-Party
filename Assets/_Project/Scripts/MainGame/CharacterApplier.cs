@@ -3,7 +3,7 @@ using Cinemachine; // Wichtig: Diese Zeile für die Kamera hinzufügen!
 
 public class CharacterApplier : MonoBehaviour
 {
-    void Awake()
+    void Start() // Awake() zu Start() ändern
     {
         // Finde das persistente CharacterSelection-Objekt
         CharacterSelection selectionInstance = CharacterSelection.Instance;
