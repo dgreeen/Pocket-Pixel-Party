@@ -1,52 +1,58 @@
 using UnityEngine;
 
 /// <summary>
-/// Manages the player's respawn position and logic.
-/// It prioritizes a directly assigned respawn point, falls back to finding a 'Respawn' tag,
-/// and finally uses the player's initial position if neither is found.
+/// Verwaltet die Respawn-Logik des Spielers. Setzt den Spieler immer zum Level-Anfang zurück.
 /// </summary>
 public class PlayerRespawn : MonoBehaviour
 {
-    [Tooltip("Assign the transform where the player should respawn. If left empty, will search for a 'Respawn' tag.")]
-    [SerializeField] private Transform respawnPoint;
+    [Header("Respawn-Punkte")]
+    [Tooltip("Der Startpunkt des Levels. Wenn leer, wird nach dem 'Respawn'-Tag gesucht.")]
+    [SerializeField] private Transform levelStartPoint;
 
-    private Vector3 _fallbackPosition;
-    private Quaternion _fallbackRotation;
+    private Vector3 _initialPosition;
+    private Rigidbody2D _rb;
 
     void Awake()
     {
-        // Store the object's initial position as the ultimate fallback.
-        _fallbackPosition = transform.position;
-        _fallbackRotation = transform.rotation;
+        // Speichere die Startposition als ultimativen Fallback.
+        _initialPosition = transform.position;
+        _rb = GetComponent<Rigidbody2D>();
 
-        // 1. Check for a directly assigned respawn point.
-        if (respawnPoint != null)
+        // 1. Prüfe, ob ein Startpunkt direkt zugewiesen wurde.
+        if (levelStartPoint != null)
         {
-            Debug.Log($"PlayerRespawn using assigned respawn point: {respawnPoint.name}");
-            return; // Success, no more work needed.
+            Debug.Log($"PlayerRespawn nutzt zugewiesenen Startpunkt: {levelStartPoint.name}");
+            return; // Erfolg, keine weitere Suche nötig.
         }
 
-        // 2. If none is assigned, try to find one by tag.
+        // 2. Wenn nicht, suche nach einem Objekt mit dem "Respawn"-Tag.
         GameObject respawnObject = GameObject.FindGameObjectWithTag("Respawn");
         if (respawnObject != null)
         {
-            respawnPoint = respawnObject.transform;
-            Debug.Log($"PlayerRespawn found respawn point via tag: {respawnPoint.name}");
+            levelStartPoint = respawnObject.transform;
+            Debug.Log($"PlayerRespawn hat Startpunkt via Tag gefunden: {levelStartPoint.name}");
         }
-        else // 3. If both checks fail, issue the warning.
+        else // 3. Wenn beides fehlschlägt, gib eine Warnung aus.
         {
-            Debug.LogWarning("Respawn point not assigned and no GameObject with tag 'Respawn' found. Using the player's initial position as a fallback.");
+            Debug.LogWarning("Kein Level-Startpunkt zugewiesen und kein GameObject mit Tag 'Respawn' gefunden. Nutze die initiale Spielerposition als Fallback.");
         }
     }
 
+    /// <summary>
+    /// Setzt den Spieler an den Anfang des Levels zurück.
+    /// </summary>
     public void Respawn()
     {
-        Vector3 targetPosition = respawnPoint != null ? respawnPoint.position : _fallbackPosition;
-        Quaternion targetRotation = respawnPoint != null ? respawnPoint.rotation : _fallbackRotation;
+        // Bestimme die Zielposition: der zugewiesene Startpunkt oder die initiale Position als Fallback.
+        Vector3 targetPosition = levelStartPoint != null ? levelStartPoint.position : _initialPosition;
 
+        // Setze die Position und stoppe jegliche Bewegung.
         transform.position = targetPosition;
-        transform.rotation = targetRotation;
+        if (_rb != null)
+        {
+            _rb.velocity = Vector2.zero;
+        }
 
-        Debug.Log($"Player respawned at position {targetPosition}.");
+        Debug.Log($"Spieler an Startpunkt {targetPosition} zurückgesetzt.");
     }
 }
