@@ -152,6 +152,13 @@ namespace Minigames.RockPaperScissors
         private void EndGame(bool playerHasWon)
         {
             SetChoiceButtonsInteractable(false);
+
+            // Markiere den Versuch als beendet, damit der MemePoint verschwindet.
+            if (SceneController.instance != null)
+            {
+                SceneController.instance.FinishCurrentMinigameAttempt();
+            }
+
             if (playerHasWon)
             {
                 // Sage dem SceneController, dass das Minispiel erfolgreich war.

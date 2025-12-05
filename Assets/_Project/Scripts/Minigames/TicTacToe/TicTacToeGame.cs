@@ -211,10 +211,18 @@ public class TicTacToeGame : MonoBehaviour
             button.interactable = false;
         }
 
+        // Markiere den Versuch als beendet, damit der MemePoint verschwindet.
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.FinishCurrentMinigameAttempt();
+        }
+
         if (playerWon)
         {
             statusText.text = "Gewonnen!";
             if (commentator != null) commentator.OnPlayerWins();
+            // Sage dem SceneController, dass das Minispiel erfolgreich war.
+            if (SceneController.instance != null) SceneController.instance.CompleteCurrentMinigame();
         }
         else
         {
@@ -230,6 +238,13 @@ public class TicTacToeGame : MonoBehaviour
     {
         gameOver = true;
         statusText.text = "Unentschieden!";
+
+        // Markiere den Versuch als beendet, damit der MemePoint verschwindet.
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.FinishCurrentMinigameAttempt();
+        }
+
         StartCoroutine(ReturnToMainGameAfterDelay());
     }
 
