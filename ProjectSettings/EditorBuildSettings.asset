@@ -35,6 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CharacterSelcetionScene.unity
     guid: ad4f04cca863ed544ab5477a5fcd8e6a
+  - enabled: 1
+    path: Assets/Scenes/viergewinnt.unity
+    guid: 6785eb4462768e943aba11e07a814a01
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 0371d155fb90b9c48b8c7bca39f703ca, type: 2}
   m_UseUCBPForAssetBundles: 0
