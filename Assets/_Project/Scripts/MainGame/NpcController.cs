@@ -48,6 +48,7 @@ public class NpcController : MonoBehaviour
             // Hole die PlayerRespawn-Komponente und rufe die Respawn-Methode auf
             if (collision.gameObject.TryGetComponent<PlayerRespawn>(out var playerRespawn))
             {
+                // Setze den Spieler an den Anfang des Levels zurück.
                 playerRespawn.Respawn();
             }
         }

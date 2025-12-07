@@ -175,6 +175,19 @@ public class PlayerProfile : MonoBehaviour
     }
 
     /// <summary>
+    /// Überladene Methode, um die Lautstärke mit einem neuen Wert zu setzen und anzuwenden.
+    /// </summary>
+    public void ApplyMasterVolume(float newVolume)
+    {
+        if (_mainAudioMixer != null)
+        {
+            float safeVolume = Mathf.Clamp(newVolume, 0.0001f, 1.0f);
+            _mainAudioMixer.SetFloat("MasterVolume", Mathf.Log10(safeVolume) * 20);
+            Debug.Log($"MasterVolume auf {_mainAudioMixer.name} gesetzt: {newVolume}");
+        }
+    }
+
+    /// <summary>
     /// Setzt den MasterVolume-Wert auf den AudioMixer.
     /// </summary>
     public void ApplyMasterVolume()

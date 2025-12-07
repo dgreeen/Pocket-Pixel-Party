@@ -28,7 +28,13 @@ public class SettingsMenuController : MonoBehaviour
         // Lade die gespeicherte Lautstärke und setze den Slider-Wert.
         // Die Lautstärke selbst wurde bereits beim Spielstart durch den GameInitializer gesetzt.
         LoadVolumeSetting();
-
+        
+        // Füge den Listener für den Slider erst hinzu, NACHDEM der initiale Wert geladen wurde.
+        // Dies verhindert, dass das Laden des Wertes ein Speicher-Event auslöst.
+        if (masterVolumeSlider != null)
+        {
+            masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
+        }
         // Lade den aktuellen Spielernamen in das Eingabefeld.
         LoadPlayerName();
     }
@@ -65,17 +71,12 @@ public class SettingsMenuController : MonoBehaviour
     /// <param name="volume">Der Wert des Sliders (zwischen 0.0001 und 1.0).</param>
     public void SetMasterVolume(float volume)
     {
-        // Wir fangen den Wert 0 ab, da Log10(0) negativ unendlich ist.
-        // Stattdessen verwenden wir einen sehr kleinen Wert, der den Mixer effektiv stummschaltet (-80dB).
-        float safeVolume = Mathf.Clamp(volume, 0.0001f, 1.0f);
-
-        // AudioMixer verwendet eine logarithmische Skala (Dezibel).
-        // Wir konvertieren den linearen Slider-Wert in einen logarithmischen dB-Wert.
-        audioMixer.SetFloat(MASTER_VOLUME_KEY, Mathf.Log10(safeVolume) * 20);
-
         // Speichere die Einstellung im Spielerprofil.
         if (PlayerProfile.instance != null)
         {
+            // Die Logik zum Anwenden auf den Mixer ist bereits im PlayerProfile,
+            // also rufen wir sie dort auf, um den Wert zu setzen und zu speichern.
+            PlayerProfile.instance.ApplyMasterVolume(volume);
             PlayerProfile.instance.SetMasterVolume(volume);
         }
     }

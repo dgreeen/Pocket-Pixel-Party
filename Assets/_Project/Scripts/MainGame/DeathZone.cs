@@ -10,6 +10,7 @@ public class DeathZone : MonoBehaviour
             // Versuche, die PlayerRespawn-Komponente zu bekommen und die Respawn-Methode aufzurufen.
             if (other.TryGetComponent<PlayerRespawn>(out var playerRespawn))
             {
+                // Setze den Spieler an den Anfang des Levels zurück.
                 playerRespawn.Respawn();
             }
         }
