@@ -208,13 +208,35 @@ public class GameManager : MonoBehaviour
     {
         gameIsOver = true;
         statusText.text = message;
-        restartButton.gameObject.SetActive(true);
+
+        bool playerWon = message.Contains("Du hast gewonnen");
+
+        // Markiere den Versuch als beendet, damit der MemePoint verschwindet.
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.FinishCurrentMinigameAttempt();
+        }
+
+        // Wenn der Spieler gewonnen hat, melde den Erfolg.
+        if (playerWon)
+        {
+            if (SceneController.instance != null)
+            {
+                SceneController.instance.CompleteCurrentMinigame();
+            }
+        }
+
+        // Starte die Coroutine, um nach einer Verzögerung zum Hauptspiel zurückzukehren.
+        StartCoroutine(ReturnToMainGameAfterDelay());
     }
     
     // Startet das Spiel neu (wird vom Button aufgerufen)
     public void RestartGame()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        // Diese Methode ist veraltet und sollte nicht mehr verwendet werden.
+        // Der Restart-Button wird durch die neue Logik nicht mehr angezeigt.
+        // UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        Debug.LogWarning("RestartGame() ist veraltet und sollte nicht aufgerufen werden.");
     }
 
     // Prüft, ob das Brett voll ist
@@ -276,5 +298,15 @@ public class GameManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    private IEnumerator ReturnToMainGameAfterDelay()
+    {
+        // Warte 3 Sekunden, damit der Spieler die Nachricht lesen kann.
+        yield return new WaitForSeconds(3f);
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.ReturnToMainGame();
+        }
     }
 }

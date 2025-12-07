@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af16b2bbce4de6349811ebf8dd3a4c14, type: 3}
+  m_Name: UpdateJavaMeme
+  m_EditorClassIdentifier: 
+  memeId: update_java
+  displayName: updating Java?
+  description: 'POV: Du fragst den Prof in OOS2, warum in 2025 noch Java 8 verwendet
+    wird'
+  memeSprite: {fileID: -5843478033931481885, guid: 1fe86c2768003a94d94aa143b4b60c43, type: 3}

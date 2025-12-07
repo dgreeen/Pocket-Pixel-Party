@@ -302,11 +302,16 @@ public class Game : MonoBehaviour
         // Warte 3 Sekunden, damit der Spieler das Ergebnis sehen kann
         yield return new WaitForSeconds(3f);
 
-        // TODO: Hier könnte man Logik für Belohnungen bei Sieg einfügen
+        // Markiere den Versuch als beendet, damit der MemePoint verschwindet.
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.FinishCurrentMinigameAttempt();
+        }
+
         if (won)
         {
-            // z.B. Fortschritt speichern
-            // TODO: Hier könnte man Logik für Belohnungen bei Sieg einfügen (z.B. Fortschritt speichern)
+            // Sage dem SceneController, dass das Minispiel erfolgreich war.
+            if (SceneController.instance != null) SceneController.instance.CompleteCurrentMinigame();
             
             // Entferne die automatisch gesetzten Flaggen wieder
             for (int x = 0; x < width; x++)

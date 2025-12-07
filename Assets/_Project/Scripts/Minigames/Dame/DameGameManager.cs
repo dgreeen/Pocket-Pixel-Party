@@ -160,6 +160,13 @@ public class DameGameManager : MonoBehaviour
     private void EndGame(PieceColor winner)
     {
         isGameActive = false;
+
+        // Markiere den Versuch als beendet, damit der MemePoint verschwindet.
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.FinishCurrentMinigameAttempt();
+        }
+
         string title, body;
         if (winner == PieceColor.Light)
         {

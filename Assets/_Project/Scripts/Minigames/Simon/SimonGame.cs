@@ -146,6 +146,18 @@ public class SimonGame : MonoBehaviour
         isPlayerTurn = false;
         SetButtonsInteractable(false);
         statusText.text = "Gewonnen! Geniale Merkrate!";
+
+        // Markiere den Versuch als beendet, damit der MemePoint verschwindet.
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.FinishCurrentMinigameAttempt();
+        }
+        // Sage dem SceneController, dass das Minispiel erfolgreich war.
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.CompleteCurrentMinigame();
+        }
+
         // Starte die Rückkehr zur Hauptszene
         StartCoroutine(ReturnToMainGameAfterDelay());
     }
@@ -155,6 +167,12 @@ public class SimonGame : MonoBehaviour
         isPlayerTurn = false;
         SetButtonsInteractable(false);
         statusText.text = $"Spiel vorbei! Deine Punktzahl: {sequence.Count - 1}";
+
+        // Markiere den Versuch als beendet, damit der MemePoint verschwindet.
+        if (SceneController.instance != null)
+        {
+            SceneController.instance.FinishCurrentMinigameAttempt();
+        }
 
         // Starte die Rückkehr zur Hauptszene
         StartCoroutine(ReturnToMainGameAfterDelay());

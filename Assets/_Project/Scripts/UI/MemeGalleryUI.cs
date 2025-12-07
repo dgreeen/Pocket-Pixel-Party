@@ -18,6 +18,15 @@ public class MemeGalleryUI : MonoBehaviour
     [Tooltip("Der Text für die Beschreibung des ausgewählten Memes.")]
     [SerializeField] private TextMeshProUGUI detailDescriptionText;
 
+    private void Awake()
+    {
+        // Sicherstellen, dass das Detailbild sein Seitenverhältnis beibehält.
+        if (detailImage != null)
+        {
+            detailImage.preserveAspect = true;
+        }
+    }
+
     // Diese Methode wird aufgerufen, wenn das Panel aktiviert wird.
     void OnEnable()
     {
