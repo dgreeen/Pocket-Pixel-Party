@@ -391,7 +391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 16
   height: 16
-  mineCount: 24
+  mineCount: 32
 --- !u!156049354 &1787007689
 Grid:
   m_ObjectHideFlags: 0
