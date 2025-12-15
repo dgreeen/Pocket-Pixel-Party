@@ -40,7 +40,7 @@ public class CharacterSelection : MonoBehaviour
             else
             {
                 Debug.LogError("SceneController nicht gefunden!");
-                SceneManager.LoadScene("SampleScene"); // Fallback
+                SceneManager.LoadScene("SampleScene"); 
             }
         }
     }
@@ -54,7 +54,7 @@ public class CharacterSelection : MonoBehaviour
         else
         {
             Debug.LogError("SceneController nicht gefunden!");
-            SceneManager.LoadScene("MainMenu"); // Fallback
+            SceneManager.LoadScene("MainMenu"); 
         }
     }
 }

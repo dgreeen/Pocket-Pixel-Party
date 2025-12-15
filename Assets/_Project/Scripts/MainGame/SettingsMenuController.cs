@@ -7,30 +7,30 @@ using UnityEngine.Audio;
 public class SettingsMenuController : MonoBehaviour
 {
     [Header("Scene Names")]
-    [Tooltip("Der Name der Hauptmenue-Szene.")]
+    [Tooltip("Der Name der Hauptmenü-Szene.")]
     [SerializeField] private string mainMenuSceneName = "MainMenu";
 
     [Header("Player Settings")]
-    [Tooltip("Das Eingabefeld fuer den Spielernamen.")]
+    [Tooltip("Das Eingabefeld für den Spielernamen.")]
     [SerializeField] private TMP_InputField nameInputField;
 
     [Header("Audio Settings")]
-    [Tooltip("Der AudioMixer, der die Lautstaerke regelt.")]
+    [Tooltip("Der AudioMixer, der die Lautstärke regelt.")]
     [SerializeField] private AudioMixer audioMixer;
-    [Tooltip("Der Slider fuer die Gesamtlautstaerke.")]
+    [Tooltip("Der Slider für die Gesamtlautstärke.")]
     [SerializeField] private Slider masterVolumeSlider;
 
-    // Der Name des Parameters, den wir im AudioMixer verfuegbar machen.
+    // Der Name des Parameters, den wir im AudioMixer verfügbar machen.
     private const string MASTER_VOLUME_KEY = "MasterVolume";
 
     private void Start()
     {
-        // Lade die gespeicherte Lautstaerke und setze den Slider-Wert.
-        // Die Lautstaerke selbst wurde bereits beim Spielstart durch den GameInitializer gesetzt.
+        // Lade die gespeicherte Lautstärke und setze den Slider-Wert.
+        // Die Lautstärke selbst wurde bereits beim Spielstart durch den GameInitializer gesetzt.
         LoadVolumeSetting();
         
-        // Fuege den Listener fuer den Slider erst hinzu, NACHDEM der initiale Wert geladen wurde.
-        // Dies verhindert, dass das Laden des Wertes ein Speicher-Event ausloest.
+        // Füge den Listener für den Slider erst hinzu, NACHDEM der initiale Wert geladen wurde.
+        // Dies verhindert, dass das Laden des Wertes ein Speicher-Event auslöst.
         if (masterVolumeSlider != null)
         {
             masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
@@ -58,7 +58,7 @@ public class SettingsMenuController : MonoBehaviour
 
     public void BackToMainMenu()
     {
-        // Wir verwenden den SceneController, um zur vorherigen Szene zurueckzukehren.
+        // Wir verwenden den SceneController, um zur vorherigen Szene zurückzukehren.
         if (SceneController.instance != null)
         {
             SceneController.instance.ReturnToPreviousScene();
@@ -66,7 +66,7 @@ public class SettingsMenuController : MonoBehaviour
     }
 
     /// <summary>
-    /// Wird vom Lautstaerke-Slider aufgerufen, wenn sich sein Wert aendert.
+    /// Wird vom Lautstärke-Slider aufgerufen, wenn sich sein Wert ändert.
     /// </summary>
     /// <param name="volume">Der Wert des Sliders (zwischen 0.0001 und 1.0).</param>
     public void SetMasterVolume(float volume)
@@ -82,20 +82,20 @@ public class SettingsMenuController : MonoBehaviour
     }
 
     /// <summary>
-    /// Wird vom "Speichern"-Button aufgerufen, um den Namen zu aendern.
+    /// Wird vom "Speichern"-Button aufgerufen, um den Namen zu ändern.
     /// </summary>
     public void ChangePlayerName()
     {
         if (PlayerProfile.instance != null && nameInputField != null && !string.IsNullOrWhiteSpace(nameInputField.text))
         {
             PlayerProfile.instance.SetPlayerName(nameInputField.text);
-            Debug.Log($"Spielername geaendert zu: {nameInputField.text}");
+            Debug.Log($"Spielername geändert zu: {nameInputField.text}");
             // Optional: Gib dem Spieler visuelles Feedback, z.B. "Gespeichert!".
         }
     }
 
     /// <summary>
-    /// Wird vom "Neuer Spieler"-Button aufgerufen. Loescht das Profil und kehrt zum Hauptmenue zurueck.
+    /// Wird vom "Neuer Spieler"-Button aufgerufen. Löscht das Profil und kehrt zum Hauptmenü zurück.
     /// </summary>
     public void ResetGame()
     {
@@ -104,7 +104,7 @@ public class SettingsMenuController : MonoBehaviour
             PlayerProfile.instance.DeleteProfile();
         }
 
-        // Kehre zum Hauptmenue zurueck. Da kein Profil mehr existiert, wird die Namenseingabe erscheinen.
+        // Kehre zum Hauptmenü zurück. Da kein Profil mehr existiert, wird die Namenseingabe erscheinen.
         SceneController.instance.LoadScene(mainMenuSceneName);
     }
 }

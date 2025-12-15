@@ -82,7 +82,6 @@ public class Game : MonoBehaviour
             }
 
             state[x, y].type = Cell.Type.Mine;
-            //state[x, y].revealed = true; // for debugging
         }
     }
 
@@ -105,7 +104,6 @@ public class Game : MonoBehaviour
                 {
                     cell.type = Cell.Type.Number;
                 }
-                //cell.revealed = true; // for debugging
                 state[x, y] = cell;
             }
         }
