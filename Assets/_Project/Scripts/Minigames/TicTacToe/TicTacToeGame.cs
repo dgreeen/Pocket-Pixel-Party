@@ -37,7 +37,7 @@ public class TicTacToeGame : MonoBehaviour
         {
             cellButtons[i].interactable = true;
             cellButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = "";
-            int index = i; // Wichtig für den Lambda-Ausdruck im Listener
+            int index = i; // Wichtig fuer den Lambda-Ausdruck im Listener
             cellButtons[i].onClick.RemoveAllListeners();
             cellButtons[i].onClick.AddListener(() => OnCellClicked(index));
         }
@@ -108,27 +108,27 @@ public class TicTacToeGame : MonoBehaviour
         if (commentator == null) return;
 
         // Simuliert, ob der Zug "gut" war.
-        // Ein "guter" Zug ist einer, der eine Gewinnchance für den Spieler schafft oder eine für die KI blockiert.
+        // Ein "guter" Zug ist einer, der eine Gewinnchance fuer den Spieler schafft oder eine fuer die KI blockiert.
         
-        // Test 1: Schafft dieser Zug eine Gewinnlinie für den Spieler?
+        // Test 1: Schafft dieser Zug eine Gewinnlinie fuer den Spieler?
         boardState[moveIndex] = PLAYER_ID;
         if (CheckWin(PLAYER_ID))
         {
-            boardState[moveIndex] = 0; // Zug zurücksetzen
+            boardState[moveIndex] = 0; // Zug zuruecksetzen
             commentator.AnalyzePlayerMove(true); // Guter Zug!
             return;
         }
-        boardState[moveIndex] = 0; // Zug zurücksetzen
+        boardState[moveIndex] = 0; // Zug zuruecksetzen
 
         // Test 2: Blockiert dieser Zug eine unmittelbare Gewinnlinie der KI?
         boardState[moveIndex] = AI_ID;
         if (CheckWin(AI_ID))
         {
-            boardState[moveIndex] = 0; // Zug zurücksetzen
+            boardState[moveIndex] = 0; // Zug zuruecksetzen
             commentator.AnalyzePlayerMove(true); // Guter Zug! (Block)
             return;
         }
-        boardState[moveIndex] = 0; // Zug zurücksetzen
+        boardState[moveIndex] = 0; // Zug zuruecksetzen
 
         // Wenn keine der beiden Bedingungen zutrifft, war es ein "normaler" oder "schlechter" Zug.
         commentator.AnalyzePlayerMove(false);
@@ -173,10 +173,10 @@ public class TicTacToeGame : MonoBehaviour
                 boardState[i] = player; // Teste den Zug
                 if (CheckWin(player))
                 {
-                    boardState[i] = 0; // Setze das Brett zurück
+                    boardState[i] = 0; // Setze das Brett zurueck
                     return i; // Gefunden!
                 }
-                boardState[i] = 0; // Setze das Brett zurück
+                boardState[i] = 0; // Setze das Brett zurueck
             }
         }
         return -1; // Kein direkter Gewinnzug gefunden
@@ -230,7 +230,7 @@ public class TicTacToeGame : MonoBehaviour
             if (commentator != null) commentator.OnAIWins();
         }
 
-        // Die Rückkehr zum Hauptspiel wird in beiden Fällen gestartet.
+        // Die Rueckkehr zum Hauptspiel wird in beiden Faellen gestartet.
         StartCoroutine(ReturnToMainGameAfterDelay());
     }
 
@@ -257,7 +257,7 @@ public class TicTacToeGame : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("SceneController nicht gefunden. Rückkehr zum Hauptspiel nicht möglich.");
+            Debug.LogWarning("SceneController nicht gefunden. Rueckkehr zum Hauptspiel nicht moeglich.");
         }
     }
 }

@@ -6,18 +6,18 @@ using System.Collections.Generic;
 public class AICommentator : MonoBehaviour
 {
     [Header("UI-Elemente")]
-    [Tooltip("Textfeld für die Kommentare der KI.")]
+    [Tooltip("Textfeld fuer die Kommentare der KI.")]
     [SerializeField] private TextMeshProUGUI commentText;
     [Tooltip("Wie lange ein Kommentar sichtbar bleibt.")]
     [SerializeField] private float commentDuration = 4.0f;
 
     [Header("Kommentar-Listen")]
-    [SerializeField] private List<string> playerGoodMoveComments = new List<string> { "Nicht schlecht!", "Ein kluger Zug.", "Das könnte interessant werden.", "Gut gespielt." };
-    [SerializeField] private List<string> playerBadMoveComments = new List<string> { "Sicher?", "Das würde ich überdenken...", "Ein mutiger, aber törichter Zug.", "Aha..." };
-    [SerializeField] private List<string> aiGoodMoveComments = new List<string> { "Schachmatt in 3 Zügen.", "Genau wie geplant.", "Siehst du? Einfach.", "Ich sehe den Sieg." };
-    [SerializeField] private List<string> gameStartComments = new List<string> { "Möge der Bessere gewinnen. (Also ich.)", "Auf ein gutes Spiel!", "Mal sehen, was du drauf hast." };
-    [SerializeField] private List<string> playerWinningComments = new List<string> { "Glück gehabt!", "Das war knapp...", "Du treibst mich in die Enge." };
-    [SerializeField] private List<string> aiWinningComments = new List<string> { "Ich hab's dir ja gesagt!", "Zu einfach.", "Nächstes Mal vielleicht." };
+    [SerializeField] private List<string> playerGoodMoveComments = new List<string> { "Nicht schlecht!", "Ein kluger Zug.","Gut gespielt." };
+    [SerializeField] private List<string> playerBadMoveComments = new List<string> { "Sicher?", "Ein mutiger, aber Zug.", "Aha..." };
+    [SerializeField] private List<string> aiGoodMoveComments = new List<string> { "Genau wie geplant.", "Siehst du? Einfach.", "Ich sehe den Sieg." };
+    [SerializeField] private List<string> gameStartComments = new List<string> { "Auf ein gutes Spiel!", "Mal sehen, was du drauf hast." };
+    [SerializeField] private List<string> playerWinningComments = new List<string> { "Das war knapp...", "Du treibst mich in die Enge." };
+    [SerializeField] private List<string> aiWinningComments = new List<string> { "Ich hab's dir ja gesagt!", "Zu einfach." };
 
     private Coroutine _currentCommentCoroutine;
 

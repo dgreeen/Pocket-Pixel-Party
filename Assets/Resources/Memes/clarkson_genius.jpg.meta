@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      clarkson_genius_0: 754130678321156264
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
