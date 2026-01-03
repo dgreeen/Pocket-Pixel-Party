@@ -91,8 +91,6 @@ public class SimonGame : MonoBehaviour
         // Zeige die gesamte Sequenz an
         foreach (int index in sequence)
         {
-            //yield return StartCoroutine(HighlightButton(index));
-            //yield return new WaitForSeconds(sequenceDisplaySpeed / 2);
             yield return StartCoroutine(HighlightButton(index, currentSequenceDisplaySpeed));
             yield return new WaitForSeconds(currentSequenceDisplaySpeed / 2);
         }
@@ -113,7 +111,6 @@ public class SimonGame : MonoBehaviour
     {
         if (!isPlayerTurn) return;
 
-        //StartCoroutine(HighlightButton(index));
         StartCoroutine(HighlightButton(index, playerHighlightDuration));
 
         if (sequence[playerInputIndex] == index)
@@ -183,7 +180,6 @@ public class SimonGame : MonoBehaviour
         Image buttonImage = colorButtons[index].GetComponent<Image>();
         buttonImage.color = highlightColor;
         // Hier könnte man auch einen Sound abspielen
-        //yield return new WaitForSeconds(sequenceDisplaySpeed);
         yield return new WaitForSeconds(duration);
         buttonImage.color = originalColors[index];
     }

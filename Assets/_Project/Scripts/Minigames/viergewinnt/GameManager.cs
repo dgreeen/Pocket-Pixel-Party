@@ -235,7 +235,6 @@ public class GameManager : MonoBehaviour
     {
         // Diese Methode ist veraltet und sollte nicht mehr verwendet werden.
         // Der Restart-Button wird durch die neue Logik nicht mehr angezeigt.
-        // UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         Debug.LogWarning("RestartGame() ist veraltet und sollte nicht aufgerufen werden.");
     }
 

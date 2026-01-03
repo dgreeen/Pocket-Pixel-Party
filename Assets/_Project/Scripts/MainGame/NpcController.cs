@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// Steuert einen NPC, der zwischen zwei Punkten patrouilliert
-/// und den Spieler bei Kollision zurücksetzt.
+/// und den Spieler bei Kollision zuruecksetzt.
 /// </summary>
 public class NpcController : MonoBehaviour
 {
@@ -42,13 +42,13 @@ public class NpcController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Prüfe, ob das kollidierte Objekt den Tag "Player" hat
+        // Pruefe, ob das kollidierte Objekt den Tag "Player" hat
         if (collision.gameObject.CompareTag("Player"))
         {
             // Hole die PlayerRespawn-Komponente und rufe die Respawn-Methode auf
             if (collision.gameObject.TryGetComponent<PlayerRespawn>(out var playerRespawn))
             {
-                // Setze den Spieler an den Anfang des Levels zurück.
+                // Setze den Spieler an den Anfang des Levels zurueck.
                 playerRespawn.Respawn();
             }
         }

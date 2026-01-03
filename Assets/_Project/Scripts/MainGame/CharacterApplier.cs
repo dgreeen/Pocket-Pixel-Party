@@ -1,14 +1,14 @@
 using UnityEngine;
-using Cinemachine; // Wichtig: Diese Zeile für die Kamera hinzufügen!
+using Cinemachine; // Wichtig: Diese Zeile fuer die Kamera hinzufuegen!
 
 public class CharacterApplier : MonoBehaviour
 {
-    void Start() // Awake() zu Start() ändern
+    void Start() // Awake() zu Start() aendern
     {
         // Finde das persistente CharacterSelection-Objekt
         CharacterSelection selectionInstance = CharacterSelection.Instance;
 
-        // Prüfe, ob die Instanz und ein ausgewähltes Prefab existieren
+        // Pruefe, ob die Instanz und ein ausgewaehltes Prefab existieren
         if (selectionInstance != null && selectionInstance.selectedCharacterPrefab != null)
         {
             // Finde das existierende Spieler-Objekt in der Szene anhand seines Tags.
@@ -20,14 +20,14 @@ public class CharacterApplier : MonoBehaviour
                 // Finde die virtuelle Kamera in der Szene.
                 CinemachineVirtualCamera virtualCamera = FindFirstObjectByType<CinemachineVirtualCamera>();
 
-                // Erstelle eine neue Instanz des ausgewählten Charakters an der Position des alten Spielers.
+                // Erstelle eine neue Instanz des ausgewaehlten Charakters an der Position des alten Spielers.
                 GameObject newPlayer = Instantiate(selectionInstance.selectedCharacterPrefab, existingPlayer.transform.position, existingPlayer.transform.rotation);
                 newPlayer.name = selectionInstance.selectedCharacterPrefab.name; // Benenne das neue Objekt zur Klarheit
 
-                // Zerstöre den alten Platzhalter-Spieler.
+                // Zerstoere den alten Platzhalter-Spieler.
                 Destroy(existingPlayer);
 
-                // **DIE LÖSUNG:** Weise der Kamera das neue Ziel zu.
+                // **DIE LOESUNG:** Weise der Kamera das neue Ziel zu.
                 if (virtualCamera != null)
                 {
                     virtualCamera.Follow = newPlayer.transform;

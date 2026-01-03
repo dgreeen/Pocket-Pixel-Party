@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Verwaltet die Respawn-Logik des Spielers. Setzt den Spieler immer zum Level-Anfang zurück.
+/// Verwaltet die Respawn-Logik des Spielers. Setzt den Spieler immer zum Level-Anfang zurueck.
 /// </summary>
 public class PlayerRespawn : MonoBehaviour
 {
@@ -18,11 +18,11 @@ public class PlayerRespawn : MonoBehaviour
         _initialPosition = transform.position;
         _rb = GetComponent<Rigidbody2D>();
 
-        // 1. Prüfe, ob ein Startpunkt direkt zugewiesen wurde.
+        // 1. Pruefe, ob ein Startpunkt direkt zugewiesen wurde.
         if (levelStartPoint != null)
         {
             Debug.Log($"PlayerRespawn nutzt zugewiesenen Startpunkt: {levelStartPoint.name}");
-            return; // Erfolg, keine weitere Suche nötig.
+            return; // Erfolg, keine weitere Suche noetig.
         }
 
         // 2. Wenn nicht, suche nach einem Objekt mit dem "Respawn"-Tag.
@@ -32,14 +32,14 @@ public class PlayerRespawn : MonoBehaviour
             levelStartPoint = respawnObject.transform;
             Debug.Log($"PlayerRespawn hat Startpunkt via Tag gefunden: {levelStartPoint.name}");
         }
-        else // 3. Wenn beides fehlschlägt, gib eine Warnung aus.
+        else // 3. Wenn beides fehlschlaegt, gib eine Warnung aus.
         {
             Debug.LogWarning("Kein Level-Startpunkt zugewiesen und kein GameObject mit Tag 'Respawn' gefunden. Nutze die initiale Spielerposition als Fallback.");
         }
     }
 
     /// <summary>
-    /// Setzt den Spieler an den Anfang des Levels zurück.
+    /// Setzt den Spieler an den Anfang des Levels zurueck.
     /// </summary>
     public void Respawn()
     {
@@ -53,6 +53,6 @@ public class PlayerRespawn : MonoBehaviour
             _rb.velocity = Vector2.zero;
         }
 
-        Debug.Log($"Spieler an Startpunkt {targetPosition} zurückgesetzt.");
+        Debug.Log($"Spieler an Startpunkt {targetPosition} zurueckgesetzt.");
     }
 }

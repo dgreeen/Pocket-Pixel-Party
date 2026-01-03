@@ -2862,34 +2862,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commentText: {fileID: 628932336}
-  commentDuration: 2.5
+  commentDuration: 4
   playerGoodMoveComments:
   - Nicht schlecht!
   - Ein kluger Zug.
-  - "Das k\xF6nnte interessant werden."
   - Gut gespielt.
   playerBadMoveComments:
   - Sicher?
-  - "Das w\xFCrde ich \xFCberdenken..."
-  - "Ein mutiger, aber t\xF6richter Zug."
+  - Ein mutiger, aber Zug.
   - Aha...
   aiGoodMoveComments:
-  - "Schachmatt in 3 Z\xFCgen."
   - Genau wie geplant.
   - Siehst du? Einfach.
   - Ich sehe den Sieg.
   gameStartComments:
-  - "M\xF6ge der Bessere gewinnen. (Also ich.)"
   - Auf ein gutes Spiel!
   - Mal sehen, was du drauf hast.
   playerWinningComments:
-  - "Gl\xFCck gehabt!"
   - Das war knapp...
   - Du treibst mich in die Enge.
   aiWinningComments:
   - Ich hab's dir ja gesagt!
   - Zu einfach.
-  - "N\xE4chstes Mal vielleicht."
 --- !u!4 &1867498835
 Transform:
   m_ObjectHideFlags: 0

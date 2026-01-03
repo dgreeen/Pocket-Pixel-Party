@@ -3,10 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class CharacterSelection : MonoBehaviour
 {
-    // Singleton-Instanz, um von überall darauf zugreifen zu können
+    // Singleton-Instanz, um von ueberall darauf zugreifen zu koennen
     public static CharacterSelection Instance;
 
-    // Prefabs für die Charakterauswahl
+    // Prefabs fuer die Charakterauswahl
     public GameObject[] characterPrefabs;
     public GameObject selectedCharacterPrefab;
 
@@ -16,11 +16,11 @@ public class CharacterSelection : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Dieses Objekt nicht zerstören, wenn eine neue Szene geladen wird
+            DontDestroyOnLoad(gameObject); // Dieses Objekt nicht zerstoeren, wenn eine neue Szene geladen wird
         }
         else
         {
-            Destroy(gameObject); // Wenn bereits eine Instanz existiert, diese hier zerstören
+            Destroy(gameObject); // Wenn bereits eine Instanz existiert, diese hier zerstoeren
         }
     }
 
@@ -29,9 +29,9 @@ public class CharacterSelection : MonoBehaviour
         if (characterIndex >= 0 && characterIndex < characterPrefabs.Length)
         {
             selectedCharacterPrefab = characterPrefabs[characterIndex];
-            Debug.Log("Charakter ausgewählt: " + selectedCharacterPrefab.name);
+            Debug.Log("Charakter ausgewaehlt: " + selectedCharacterPrefab.name);
 
-            // Lade die Spiel-Szene über den SceneController
+            // Lade die Spiel-Szene ueber den SceneController
             if (SceneController.instance != null)
             {
                 // "SampleScene" ist der Name deiner Hauptspiel-Szene
@@ -40,7 +40,7 @@ public class CharacterSelection : MonoBehaviour
             else
             {
                 Debug.LogError("SceneController nicht gefunden!");
-                SceneManager.LoadScene("SampleScene"); // Fallback
+                SceneManager.LoadScene("SampleScene"); 
             }
         }
     }
@@ -54,7 +54,7 @@ public class CharacterSelection : MonoBehaviour
         else
         {
             Debug.LogError("SceneController nicht gefunden!");
-            SceneManager.LoadScene("MainMenu"); // Fallback
+            SceneManager.LoadScene("MainMenu"); 
         }
     }
 }
