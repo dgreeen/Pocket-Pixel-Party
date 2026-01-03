@@ -454,6 +454,12 @@ public class DameGameManager : MonoBehaviour
         // Ruft die zentrale Methode im SceneController auf, um zum Hauptspiel zurückzukehren.
         if (SceneController.instance != null)
         {
+            // EventSystem wieder aktivieren, damit UI-Buttons im MainGame funktionieren.
+            var eventSystem = SceneController.instance.gameObject.GetComponent<UnityEngine.EventSystems.EventSystem>();
+            if (eventSystem != null)
+            {
+                eventSystem.enabled = true;
+            }
             SceneController.instance.ReturnToMainGame();
         }
     }
