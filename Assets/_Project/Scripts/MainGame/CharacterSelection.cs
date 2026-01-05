@@ -12,16 +12,21 @@ public class CharacterSelection : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton-Pattern: Stellt sicher, dass es nur eine Instanz dieses Objekts gibt
-        if (Instance == null)
+        // Singleton-Pattern angepasst:
+        // Wenn bereits eine Instanz existiert, zerstören wir die ALTE und behalten die NEUE.
+        // Das ist notwendig, weil die UI-Buttons in der Szene mit der NEUEN Instanz verknüpft sind.
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Dieses Objekt nicht zerstoeren, wenn eine neue Szene geladen wird
+            // Übernehme die Auswahl der alten Instanz, falls in der neuen noch nichts gesetzt ist.
+            if (selectedCharacterPrefab == null)
+            {
+                selectedCharacterPrefab = Instance.selectedCharacterPrefab;
+            }
+            Destroy(Instance.gameObject);
         }
-        else
-        {
-            Destroy(gameObject); // Wenn bereits eine Instanz existiert, diese hier zerstoeren
-        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void SelectCharacter(int characterIndex)

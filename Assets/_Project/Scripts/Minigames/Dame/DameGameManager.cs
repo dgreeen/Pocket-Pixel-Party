@@ -224,7 +224,7 @@ public class DameGameManager : MonoBehaviour
                 if (board[jumpedX, jumpedY].isKing) score += 50;
             }
             if (!move.piece.isKing && move.toY == BOARD_SIZE - 1) score += 200;
-            if (IsSquareThreatened(move.toX, move.toY, PieceColor.Light)) score -= 75;
+            if (IsSquareThreatened(move.toX, move.toY, PieceColor.Light, move.piece)) score -= 75;
             if (!move.piece.isKing) score += move.toY;
 
             if (score > bestScore)
@@ -314,7 +314,7 @@ public class DameGameManager : MonoBehaviour
         return possibleJumps;
     }
 
-    private bool IsSquareThreatened(int x, int y, PieceColor threateningColor)
+    private bool IsSquareThreatened(int x, int y, PieceColor threateningColor, Piece ignorePiece = null)
     {
         for (int dx = -1; dx <= 1; dx += 2)
         {
@@ -322,12 +322,23 @@ public class DameGameManager : MonoBehaviour
             {
                 int attackerX = x + dx; int attackerY = y + dy;
                 int landingX = x - dx; int landingY = y - dy;
-                if (attackerX >= 0 && attackerX < BOARD_SIZE && attackerY >= 0 && attackerY < BOARD_SIZE)
+
+                if (attackerX >= 0 && attackerX < BOARD_SIZE && attackerY >= 0 && attackerY < BOARD_SIZE &&
+                    landingX >= 0 && landingX < BOARD_SIZE && landingY >= 0 && landingY < BOARD_SIZE)
                 {
                     Piece potentialAttacker = board[attackerX, attackerY];
-                    if (potentialAttacker != null && potentialAttacker.color == threateningColor && IsValidMove(potentialAttacker, landingX, landingY))
+                    if (potentialAttacker != null && potentialAttacker.color == threateningColor)
                     {
-                        return true;
+                        Piece landingPiece = board[landingX, landingY];
+                        // Das Zielfeld des Angreifers muss leer sein (oder der Stein sein, der sich gerade bewegt)
+                        if (landingPiece == null || landingPiece == ignorePiece)
+                        {
+                            if (potentialAttacker.isKing) return true;
+
+                            int moveDir = (threateningColor == PieceColor.Light) ? -1 : 1;
+                            // Ein normaler Stein muss in seine Laufrichtung springen
+                            if (landingY - attackerY == moveDir * 2) return true;
+                        }
                     }
                 }
             }
@@ -443,6 +454,12 @@ public class DameGameManager : MonoBehaviour
         // Ruft die zentrale Methode im SceneController auf, um zum Hauptspiel zurückzukehren.
         if (SceneController.instance != null)
         {
+            // EventSystem wieder aktivieren, damit UI-Buttons im MainGame funktionieren.
+            var eventSystem = SceneController.instance.gameObject.GetComponent<UnityEngine.EventSystems.EventSystem>();
+            if (eventSystem != null)
+            {
+                eventSystem.enabled = true;
+            }
             SceneController.instance.ReturnToMainGame();
         }
     }
