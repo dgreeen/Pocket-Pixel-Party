@@ -24,11 +24,49 @@ Pocket-Pixel-Party ist ein Partyspiel, das mit Unity entwickelt wird. Das Projek
 
 ---
 
-## 🏁 Erste Schritte
+## 🎮 Steuerung & Anleitung
 
-Folge diesen Schritten, um eine lokale Kopie des Projekts zum Laufen zu bringen.
+### 🌍 In der Spielwelt
 
-### Voraussetzungen
+| Aktion        | Taste / Eingabe |
+|--------------|-----------------|
+| Bewegen      | Pfeiltaste Links ⬅️ / Pfeiltaste Rechts ➡️ |
+| Springen     | Leertaste ␣ |
+| Interagieren | Linke Maustaste 🖱️ (auf Buttons/Objekte) |
+
+---
+
+### 🕹️ Minispiele
+
+#### ♟️ Dame
+- Klicke auf deinen Stein, um ihn auszuwählen.
+- Klicke auf ein freies, diagonal angrenzendes Feld (oder über einen Gegner), um zu springen.
+
+#### 💣 Minesweeper
+- **Linksklick:** Feld aufdecken  
+- **Rechtsklick:** Flagge setzen 🚩 (zum Markieren von Minen)
+
+#### 🏓 Pong
+- Steuere den Schläger mit:
+  - Pfeiltaste Oben ⬆️
+  - Pfeiltaste Unten ⬇️
+
+#### ✂️ Schere, Stein, Papier
+- Wähle dein Symbol per Mausklick aus.
+
+#### 💡 Simon Says
+- Merke dir die Reihenfolge und klicke die farbigen Felder in der gleichen Reihenfolge an.
+
+#### ⭕ Tic Tac Toe
+- Setze dein Zeichen per Mausklick in das gewünschte Feld.
+
+#### 🔴 Vier Gewinnt
+- Klicke auf eine Spalte, um deinen Stein dort einzuwerfen.
+
+
+---
+
+### Voraussetzungen zum Bearbeiten
 
 Stelle sicher, dass die folgende Software auf deinem System installiert ist:
 *   [Git](https://git-scm.com/)
@@ -52,6 +90,9 @@ Stelle sicher, dass die folgende Software auf deinem System installiert ist:
 
 ## 🏃 Verwendung
 
+Wenn du wirklich nur Spielen willst, nutze den Link oder die Archive unter Releases.
+
+Wenn du Sachen anpassen willst, sind das deine Schritte:
 1.  Öffne die Hauptmenü-Szene unter `Assets/Scenes/MainMenu.unity`.
 2.  Drücke den **Play-Button** oben im Unity Editor, um das Spiel zu starten.
 
