@@ -45,3 +45,8 @@ Thumbs.db
 Logs/
 UserSettings/
 Build*
+
+# Erlaube den Build-Ordner innerhalb von docs,
+# auch wenn "Build/" weiter oben ignoriert wird.
+!docs/Build/
+!docs/Build/*
