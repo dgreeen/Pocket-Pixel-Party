@@ -1,3 +1,23 @@
+<div align="center">
+
+  <img src="https://img.shields.io/badge/Made%20with-Unity-000000?style=for-the-badge&logo=unity&logoColor=white" alt="Made with Unity">
+
+  <img src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Windows">
+  <img src="https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white" alt="macOS">
+  <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux">
+  <img src="https://img.shields.io/badge/WebGL-e34f26?style=for-the-badge&logo=html5&logoColor=white" alt="WebGL">
+
+  <br>
+  <a href="https://dgreeen.github.io/Pocket-Pixel-Party/">
+    <img src="https://img.shields.io/badge/Play%20Now-Browser%20Demo-success?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Play Now">
+  </a>
+  <a href="https://github.com/dgreeen/Pocket-Pixel-Party/releases">
+    <img src="https://img.shields.io/github/v/release/dgreeen/Pocket-Pixel-Party?style=for-the-badge&label=Latest%20Version&color=blue" alt="Latest Release">
+  </a>
+
+</div>
+<br>
+
 # Pocket-Pixel-Party
 
 LLMgSE Projekt WS25/26. Garantiert kein Brainrot.
@@ -13,6 +33,7 @@ Pocket-Pixel-Party ist ein Partyspiel, das mit Unity entwickelt wird. Das Projek
 
 *   **Hauptmenü:** Ein voll funktionsfähiges Hauptmenü mit Navigation zu Spielstart, Charakterauswahl, Einstellungen und zum Beenden des Spiels.
 *   **Szenen-Management:** Vorhandene Logik zum Laden verschiedener Spielszenen (z.B. `SampleScene`, `SettingsScene`).
+*   **Minispiele:** Viele verschiedene Minispiele, die dich zurück in deine Jugend bringen.
 *   **Pixel-Art-Stil:** Eine charmante Retro-Grafik, die an klassische Spiele erinnert.
 
 ---
@@ -30,7 +51,7 @@ Pocket-Pixel-Party ist ein Partyspiel, das mit Unity entwickelt wird. Das Projek
 
 | Aktion        | Taste / Eingabe |
 |--------------|-----------------|
-| Bewegen      | Pfeiltaste Links ⬅️ / Pfeiltaste Rechts ➡️ |
+| Bewegen      | A oder Pfeiltaste Links ⬅️ / D oder Pfeiltaste Rechts ➡️ |
 | Springen     | Leertaste ␣ |
 | Interagieren | Linke Maustaste 🖱️ (auf Buttons/Objekte) |
 
@@ -90,7 +111,7 @@ Stelle sicher, dass die folgende Software auf deinem System installiert ist:
 
 ## 🏃 Verwendung
 
-Wenn du wirklich nur Spielen willst, nutze den Link oder die Archive unter Releases.
+Wenn du wirklich **nur Spielen** willst, nutze den Link https://dgreeen.github.io/Pocket-Pixel-Party/ oder die Archive unter Releases.
 
 Wenn du Sachen anpassen willst, sind das deine Schritte:
 1.  Öffne die Hauptmenü-Szene unter `Assets/Scenes/MainMenu.unity`.
